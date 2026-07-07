@@ -1,0 +1,79 @@
+# Master UI/UX Generation Prompt: LifeStream V3 — Smart Blood Network (Light Theme Edition)
+
+*(Geospatial Dispatch Gateway with AI Match Confidence Scoring and IoT Cold-Chain Simulation)*
+
+Feed this highly detailed, professional, and visually stunning prompt into your AI design suite (e.g., Project IDX, Google AI Studio, v0.dev, or Bolt.new) to generate a complete, premium, responsive layout.
+
+---
+
+## Generator Prompt Specification
+
+Build a premium, responsive, and visually delightful web interface for "LifeStream V3 — Smart Blood Network" utilizing a premium, modern Light Theme. The interface must include a dynamic initial Splash Screen Gateway that splits into three distinct role-based sub-systems (Admin, Coordinator/Dispatcher, and Donor).
+
+### 1. AESTHETICS & EMOTIONAL SYSTEM THEME
+- **Visual Feel:** "Clinical Precision with Compassion." The UI should feel like a state-of-the-art medical logistics board—extremely modern, trustworthy, and intuitive. Soft white acrylic and warm red highlights emphasize life-saving urgency without inducing anxiety.
+- **Color Palette (Light Glassmorphic):**
+  * Canvas Base Background: Clean Alabaster White (#fbfbfc)
+  * Panel Backgrounds: Ultra-Frosted Milky Glass (rgba(255, 255, 255, 0.8))
+  * Borders: 1px thin outlines with pastel linear gradients (linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(6, 182, 212, 0.15)))
+  * Primary Emergency Accent: Bright Crimson Red (#dc2626)
+  * Secondary AI Accent: Sky Teal (#06b6d4)
+  * Warning Indicators: Warm Amber (#f59e0b)
+  * Safe Cooldown Indicators: Emerald Green (#10b981)
+  * Muted Details: Soft Slate Grey (#64748b)
+- **Filters & Shadows:** `backdrop-filter: blur(14px)`, box-shadow: `0 8px 32px rgba(100, 116, 139, 0.05)`.
+- **Typography:** Space Grotesk (headers and statistics), Inter (live lists).
+
+---
+
+### 2. DYNAMIC INITIAL SPLASH SCREEN (THE ROLE GATEWAY)
+- **Desktop & Mobile Layout:** Centered single-column layout on a soft crimson-white radial background gradient.
+- **Title Block:** "LifeStream V3 Network" in bold Crimson Red text, with a dynamic floating heart/drone graphics icon.
+- **The Role Selection Grid:** A horizontal row of three large, high-fidelity frosted cards (spanning 4 columns each on desktop; stacking vertically on mobile). Each card has:
+  * **Card 1: "Donor Portal"**
+    * Accent: Emerald Green border highlight.
+    * Text: "Register your donor profile, check your 56-day cooldown status, view local donation centers, and see live coordinates."
+    * Action Button: "Access Donor Portal" - Emerald Green background, white text, padding: 12px 20px, hover: scale(1.03) with soft green glow.
+  * **Card 2: "Coordinator Deck"**
+    * Accent: Bright Crimson Red border highlight.
+    * Text: "Query compatible blood supplies, calculate geospatial distances, evaluate AI match confidence scores, and dispatch drones."
+    * Action Button: "Open Dispatch Deck" - Crimson Red background, white text, padding: 12px 20px, hover: scale(1.03) with soft red glow.
+  * **Card 3: "Admin Command Console"**
+    * Accent: Sky Teal border highlight.
+    * Text: "Manage global donor registries, monitor drone fleet battery health, review audit logs, and export database CSV files."
+    * Action Button: "Enter Console" - Sky Teal background, white text, padding: 12px 20px, hover: scale(1.03) with soft teal glow.
+
+---
+
+### 3. ROLE-BASED UI/UX BOARDS (POST-LOGIN PATHS)
+
+#### A. THE ADMIN COMMAND CONSOLE (POST-LOGIN ROLE: ADMIN)
+- **Layout Grid:** 12-column grid. Left Navigation Sidebar: 3 columns. Center Data Hub: 9 columns. Inner padding: p-6 (24px). Gap: 20px.
+- **Controls & Widgets:**
+  - **Drone Fleet Monitor:** Frosted table displaying active drone statuses, battery percentages (interactive progress bars), and drone model types.
+  - **Database Registry Manager:** Global list of registered donors, verification toggles, and a primary button "Export Roster to CSV" (Sky Teal background, padding: 12px 24px).
+  - **System Logs Viewer:** Real-time log monitor documenting every emergency dispatch transaction.
+
+#### B. THE COORDINATOR DISPATCH DECK (POST-LOGIN ROLE: COORDINATOR)
+- **Layout Grid:** Full screen layout. Leaflet.js Map as background.
+  - **Left Overlay (AI Matching Panel):** Width: 380px. Absolute height: calc(100vh - 40px). Positioned top-5, left-5. Padding: p-6 (24px). Ultra-Frosted Milky Glass background.
+  - **Right Overlay (Live Telemetry Monitor):** Width: 320px. Absolute height: calc(100vh - 40px). Positioned top-5, right-5. Padding: p-6 (24px).
+- **Controls & Widgets:**
+  - **Blood Type Selection Panel:** 8-column layout (O-, O+, A-, A+, B-, B+, AB-, AB+) of frosted square buttons. The active button highlights with a thick crimson outline and radial background glow.
+  - **Critical Urgency Override Switch:** Red-bordered alert toggle to bypass 56-day donation cooldown restrictions.
+  - **AI Priority Listing Cards:** Scrollable list displaying: Name, Distance (miles), Reliability %. Each card features an "AI Score Badge" (glowing ring displaying calculated match score) and a bright button: "Dispatch Drone" (Crimson Red background, white text, padding: 8px 16px).
+  - **Active Drone Progress Indicator:** Horizontal grid tracker with a pulsing red drone icon that animates along the timeline in 10% steps.
+  - **IoT Cold-Chain Sparkline:** Dynamic real-time SVG line canvas. Draws a running temperature graph fluctuating strictly between $2.5^\circ\text{C}$ and $5.5^\circ\text{C}$. Out-of-bounds fluctuations trigger a flashing amber alert reading: "COLD-CHAIN DANGER".
+
+#### C. THE DONOR PORTAL (POST-LOGIN ROLE: DONOR)
+- **Layout Grid:** Stacked single-column mobile-first layout. Card size: 360px centered. Inner padding: p-5 (20px).
+- **Controls & Widgets:**
+  - **Eligibility Dial:** Large circular SVG countdown showing days left until eligible to donate (e.g., 24 Days). Inside: "O- Donor Profile" in bold text.
+  - **Local Radar Map:** Leaflet map display showing nearest hospitals and emergency donation clinics, complete with "Get Route" buttons.
+  - **Donor Privacy Toggle:** Simple toggle switch "Mask My Contact Information" ensuring absolute proxy anonymity in the dispatch system.
+
+---
+
+### 4. FUTURE EXPANSIONS & STRATEGIES
+- **Autonomous Fleet Allocator:** An intelligent dashboard utility estimating future emergency supply depletion based on geographical medical histories.
+- **Dynamic Routing Optimization:** Visualizes secondary routes dynamically if the primary drone corridor faces adverse weather.

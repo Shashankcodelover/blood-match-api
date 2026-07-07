@@ -1,39 +1,56 @@
-# LifeStream V3 - Smart Blood Network
+# 🩸 LifeStream V3: Smart Blood Network
 
-A cutting-edge "Uber for Blood" logistics and dispatch platform built for rapid emergency medical response. 
+A cutting-edge geospatial medical logistics and dispatch platform designed for rapid emergency blood response. By integrating real-time map tracking, IoT cold-chain simulation, and AI-assisted match scoring, it accelerates the connection between traumatic trauma incidents and blood centers while protecting privacy.
 
-## Features
-- **Live GPS Radar Map**: Powered by Leaflet.js, visualizing hospitals and donors in real-time without API keys.
-- **Autonomous Dispatch Tracking**: Simulates the real-time movement of medical drones or transports on the map.
-- **AI Match Confidence Scoring**: Evaluates geospatial proximity, 56-day medical cooldowns, and reliability to rank donors.
-- **Cold-Chain IoT Simulation**: Monitors blood temperature to ensure medical compliance during active transport.
-- **Anonymized Proxy Communication**: Protects donor privacy by masking contact details during dispatch.
+## 🚀 Key Features
 
-## Tech Stack
-- **Frontend**: React.js, Tailwind CSS, Leaflet.js
-- **Backend**: Node.js, Express.js
-- **Database**: Local JSON persistence (`db.json`)
+* **Leaflet-Powered Live Radar Map:** High-fidelity interactive mapping tracking emergency hospitals, active dispatch medical drones, and nearby eligible donors.
+* **Double-Factor Biological Gate:** Restricts matches based on biological blood group compatibility and enforces the mandatory 56-day donor cooldown period (with a coordinator "Critical Urgency" override to bypass cooldowns during critical life-saving operations).
+* **AI Match Confidence Scoring:** Ranks potential donors using a geospatial proximity algorithm (Haversine Formula) balanced against historical donor reliability metrics.
+* **IoT Cold-Chain Telemetry Simulation:** Simulates ambient and container temperature fluctuations ($2.5^\circ\text{C}$ to $5.5^\circ\text{C}$) to guarantee blood supply compliance, triggering alerts if temperatures deviate.
+* **Anonymized Proxy Security:** Protects sensitive medical records by masking donor phone numbers and addresses with secure communications routing.
 
-## Getting Started
+---
 
-1. Clone the repository and navigate to the project directory:
+## 🛠️ Tech Stack
+
+* **Frontend:** React.js, Tailwind CSS, Leaflet.js (Map tracking)
+* **Backend:** Node.js, Express.js (v4+)
+* **Input Validation:** Zod schema enforcement
+* **Database:** Zero-dependency local JSON file persistence (`db.json`) for lightweight setups
+
+---
+
+## 📦 Project Structure
+
+```text
+📦 lifestream-blood-network
+ ┣ 📂 frontend       # React client map interface
+ ┣ 📂 src            # Express routing and simulation schemas
+ ┣ 📜 db.json        # Atomic JSON file database store
+ ┣ 📜 package.json   # Backend manifest
+ ┗ 📜 README.md      # Platform documentation
+```
+
+---
+
+## 🚦 Getting Started
+
+### Backend Setup
+1. Navigate to the root directory:
    ```bash
-   cd blood-match-api
+   cd lifestream-blood-network
    ```
-
-2. Install the backend dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
-
 3. Start the dispatch server:
    ```bash
    node src/server.js
    ```
 
-4. Open `frontend/index.html` in your web browser.
-
-## Architecture Highlights
-This system bypasses heavy database configurations by using a fast, file-based JSON database (`db.json`), ensuring it can run immediately on any machine without complex Docker or PostgreSQL setups. 
-
-The frontend logic uses the Haversine formula for geospatial proximity and interfaces seamlessly with the tracking endpoints to provide smooth 1.5-second polling intervals for live map animations.
+### Frontend Setup
+1. Open the local static front-end page directly in a browser:
+   - `frontend/index.html`
+2. Ensure the backend server is running on `http://localhost:5000` (or configured port) to handle API requests and map queries.
