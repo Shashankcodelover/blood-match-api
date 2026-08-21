@@ -1,4 +1,5 @@
 node_modules/
 db.json
+dist/
 .env
 .DS_Store

@@ -1,20 +1,19 @@
 {
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.1",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "pg": "^8.20.0"
-  },
-  "name": "blood-match-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "lifestream-blood-match",
+  "version": "3.1.0",
+  "description": "LifeStream V3 - Smart Blood & Emergency Logistics Platform",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev:backend": "node src/server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "node src/seed.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "sql.js": "^1.10.3",
+    "uuid": "^9.0.1"
+  }
 }
