@@ -1,39 +1,39 @@
-# LifeStream V3 - Smart Blood Network
+# LifeStream V3.1 — Smart Blood & Autonomous Emergency Dispatch Platform
 
-A cutting-edge "Uber for Blood" logistics and dispatch platform built for rapid emergency medical response. 
+LifeStream V3.1 is a cutting-edge "Uber for Blood" emergency logistics and dispatch platform designed for rapid medical response.
+
+```
+blood-match-api/
+├── src/            Node.js + Express REST API (AI matching, telemetry simulation)
+└── frontend/       Vite + React 18, Tailwind CSS, Leaflet.js Radar Map
+```
 
 ## Features
-- **Live GPS Radar Map**: Powered by Leaflet.js, visualizing hospitals and donors in real-time without API keys.
-- **Autonomous Dispatch Tracking**: Simulates the real-time movement of medical drones or transports on the map.
-- **AI Match Confidence Scoring**: Evaluates geospatial proximity, 56-day medical cooldowns, and reliability to rank donors.
-- **Cold-Chain IoT Simulation**: Monitors blood temperature to ensure medical compliance during active transport.
-- **Anonymized Proxy Communication**: Protects donor privacy by masking contact details during dispatch.
 
-## Tech Stack
-- **Frontend**: React.js, Tailwind CSS, Leaflet.js
-- **Backend**: Node.js, Express.js
-- **Database**: Local JSON persistence (`db.json`)
+- 🛰️ **Interactive Leaflet Radar Map**: Dark-mode geospatial map visualizing hospitals, donors, and active transport routes without external API keys.
+- 🚁 **Autonomous Drone & Transport Telemetry**: Simulates real-time 1.5s vector telemetry (GPS coordinates, vehicle speed, altitude, battery percentage).
+- 🌡️ **Cold-Chain IoT Monitoring**: Real-time blood temperature tracking (safe zone 2°C - 6°C) to ensure medical compliance during active transit.
+- 🧠 **AI Match Confidence Scoring**: Evaluates donor geospatial proximity (Haversine formula), 56-day medical donation cooldowns, and reliability ratings.
+- 🏥 **Hospital Inventory Monitoring**: Live multi-hospital blood bank stock level management per blood type.
+- 👤 **Donor Registration Engine**: Instant donor onboarding with auto-geolocation and verification status.
 
 ## Getting Started
 
-1. Clone the repository and navigate to the project directory:
-   ```bash
-   cd blood-match-api
-   ```
+### 1. Backend Server
+```bash
+cd blood-match-api
+npm install
+npm start          # Running on http://localhost:3000
+```
 
-2. Install the backend dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the dispatch server:
-   ```bash
-   node src/server.js
-   ```
-
-4. Open `frontend/index.html` in your web browser.
+### 2. Frontend Development Server
+```bash
+cd blood-match-api/frontend
+npm install
+npm run dev        # Running on http://localhost:5174
+```
 
 ## Architecture Highlights
-This system bypasses heavy database configurations by using a fast, file-based JSON database (`db.json`), ensuring it can run immediately on any machine without complex Docker or PostgreSQL setups. 
-
-The frontend logic uses the Haversine formula for geospatial proximity and interfaces seamlessly with the tracking endpoints to provide smooth 1.5-second polling intervals for live map animations.
+- **Geospatial Matching Engine**: Evaluates donor distance using the Haversine formula and enforces 56-day donation eligibility unless marked as Critical Emergency.
+- **Vite + Tailwind Frontend**: Componentized React architecture with glassmorphism UI, pulsing radar markers, and live telemetry overlays.
+- **RESTful Endpoints**: `/api/donors/matches/:bloodType`, `/api/dispatch`, `/api/dispatch/track/:id`, `/api/hospitals`.
