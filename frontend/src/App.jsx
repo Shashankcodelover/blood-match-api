@@ -3,23 +3,25 @@ import { Navbar } from './components/Navbar';
 import { RadarMap } from './components/RadarMap';
 import { DispatchSidebar } from './components/DispatchSidebar';
 import { TelemetryOverlay } from './components/TelemetryOverlay';
-import { HospitalInventoryModal } from './components/HospitalInventoryModal';
-import { RegisterDonorModal } from './components/RegisterDonorModal';
-import { AdminPortalModal } from './components/AdminPortalModal';
-import { BloodMatrixModal } from './components/BloodMatrixModal';
-import { EmergencyRequestModal } from './components/EmergencyRequestModal';
-import { DonorLeaderboardModal } from './components/DonorLeaderboardModal';
-import { InterHospitalTransferModal } from './components/InterHospitalTransferModal';
-import { DonorEligibilityModal } from './components/DonorEligibilityModal';
+import { ReservesView } from './components/ReservesView';
+import { CommunityView } from './components/CommunityView';
+import { DeliveryTrackerView } from './components/DeliveryTrackerView';
 import { AuthModal } from './components/AuthModal';
 import { UserProfileModal } from './components/UserProfileModal';
-import { OrderTrackingModal } from './components/OrderTrackingModal';
+import { AdminPortalModal } from './components/AdminPortalModal';
+import { EmergencyRequestModal } from './components/EmergencyRequestModal';
 import { DonorAppointmentModal } from './components/DonorAppointmentModal';
+import { DonorEligibilityModal } from './components/DonorEligibilityModal';
+import { InterHospitalTransferModal } from './components/InterHospitalTransferModal';
+import { RegisterDonorModal } from './components/RegisterDonorModal';
 import { ToastNotification } from './components/ToastNotification';
-import { playDispatchSonar, playArrivalChime, toggleSound, isSoundEnabled } from './utils/audioAlerts';
+import { playDispatchSonar, playArrivalChime, toggleSound } from './utils/audioAlerts';
 import { resilientFetch } from './api/client';
 
 export default function App() {
+  // Navigation View Tab State
+  const [activeTab, setActiveTab] = useState('radar'); // radar | tracker | reserves | community
+
   // Authentication State
   const [user, setUser] = useState(() => {
     try {
@@ -37,6 +39,11 @@ export default function App() {
     setTimeout(() => setToast(null), 4000);
   };
 
+  // Live Geolocation State
+  const [userLocation, setUserLocation] = useState(null);
+  const [isTrackingLocation, setIsTrackingLocation] = useState(false);
+  const geoWatchIdRef = useRef(null);
+
   // Operational State
   const [recipientType, setRecipientType] = useState('O-');
   const [urgency, setUrgency] = useState('critical');
@@ -50,19 +57,54 @@ export default function App() {
   // Modal Visibility States
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showOrderTracking, setShowOrderTracking] = useState(false);
-  const [showAppointments, setShowAppointments] = useState(false);
-  const [showInventory, setShowInventory] = useState(false);
-  const [showRegisterDonor, setShowRegisterDonor] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
-  const [showMatrixModal, setShowMatrixModal] = useState(false);
   const [showEmergencyRequest, setShowEmergencyRequest] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [showInterHospital, setShowInterHospital] = useState(false);
+  const [showAppointments, setShowAppointments] = useState(false);
   const [showEligibilityModal, setShowEligibilityModal] = useState(false);
+  const [showInterHospital, setShowInterHospital] = useState(false);
+  const [showRegisterDonor, setShowRegisterDonor] = useState(false);
 
   const trackingIntervalRef = useRef(null);
   const acknowledgedArrivedRef = useRef(new Set());
+
+  // Geolocation Tracker Toggle
+  const toggleUserLocation = () => {
+    if (isTrackingLocation) {
+      if (geoWatchIdRef.current) navigator.geolocation.clearWatch(geoWatchIdRef.current);
+      setIsTrackingLocation(false);
+      setUserLocation(null);
+      showToast('Live GPS tracking deactivated.', 'info');
+    } else {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            setUserLocation(coords);
+            setIsTrackingLocation(true);
+            showToast(`📍 GPS Locked: Lat ${coords.lat.toFixed(4)}, Lng ${coords.lng.toFixed(4)}`, 'success');
+          },
+          (err) => {
+            console.warn(err);
+            // Default SF General coordinates fallback if browser permission blocked
+            const coords = { lat: 37.7749, lng: -122.4194 };
+            setUserLocation(coords);
+            setIsTrackingLocation(true);
+            showToast('GPS Radar anchored to San Francisco Trauma Grid.', 'info');
+          }
+        );
+
+        geoWatchIdRef.current = navigator.geolocation.watchPosition(
+          (pos) => {
+            setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          },
+          () => {},
+          { enableHighAccuracy: true, maximumAge: 5000 }
+        );
+      } else {
+        showToast('Geolocation is not supported by your browser.', 'error');
+      }
+    }
+  };
 
   // Fetch Hospitals list
   const fetchHospitals = useCallback(async () => {
@@ -82,16 +124,18 @@ export default function App() {
   // Fetch AI Matched Donors
   const fetchMatches = useCallback(async () => {
     try {
-      const data = await resilientFetch(`/api/donors/matches/${recipientType}?urgency=${urgency}&hospitalId=${selectedHospitalId}`);
+      const url = userLocation
+        ? `/api/donors/matches/${recipientType}?urgency=${urgency}&lat=${userLocation.lat}&lng=${userLocation.lng}`
+        : `/api/donors/matches/${recipientType}?urgency=${urgency}&hospitalId=${selectedHospitalId}`;
+      const data = await resilientFetch(url);
       if (data && data.matches) {
         setMatches(data.matches);
       }
     } catch (e) {
       console.error('Error fetching matches:', e);
     }
-  }, [recipientType, urgency, selectedHospitalId]);
+  }, [recipientType, urgency, selectedHospitalId, userLocation]);
 
-  // Fetch all initial data
   useEffect(() => {
     fetchHospitals();
   }, [fetchHospitals]);
@@ -121,7 +165,6 @@ export default function App() {
     }
   }, []);
 
-  // Polling loop manager
   useEffect(() => {
     trackingIntervalRef.current = setInterval(pollActiveTelemetry, 1500);
     return () => {
@@ -193,65 +236,92 @@ export default function App() {
   const currentHospital = hospitals.find(h => h.id === selectedHospitalId) || hospitals[0] || { name: 'SF General Trauma Center', lat: 37.7749, lng: -122.4194 };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden select-none bg-slate-950 font-sans text-slate-100">
+    <div className="relative w-full h-screen overflow-x-hidden select-none bg-slate-950 font-sans text-slate-100">
       {/* Toast Alert */}
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
 
-      {/* Navbar Header */}
+      {/* Clean, Lightweight Modular Navbar */}
       <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         user={user}
         onOpenAuth={() => setShowAuthModal(true)}
         onOpenProfile={() => setShowProfileModal(true)}
-        onOpenInventory={() => setShowInventory(true)}
-        onOpenRegisterDonor={() => setShowEligibilityModal(true)}
-        onOpenAdmin={() => setShowAdminModal(true)}
-        onOpenMatrix={() => setShowMatrixModal(true)}
         onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
-        onOpenLeaderboard={() => setShowLeaderboard(true)}
-        onOpenInterHospital={() => setShowInterHospital(true)}
-        onOpenOrderTracking={() => setShowOrderTracking(true)}
-        onOpenAppointments={() => setShowAppointments(true)}
+        onOpenAdmin={() => setShowAdminModal(true)}
         onToggleSound={handleSoundToggle}
         soundOn={soundOn}
         activeDispatchCount={activeInFlightCount}
+        isTrackingUserLocation={isTrackingLocation}
+        onToggleUserLocation={toggleUserLocation}
       />
 
-      {/* Interactive Leaflet Radar Map */}
-      <RadarMap
-        hospitals={hospitals}
-        selectedHospitalId={selectedHospitalId}
-        onSelectHospital={setSelectedHospitalId}
-        matches={matches}
-        activeDispatches={dispatches}
-        focusedDispatchId={focusedDispatchId}
-      />
+      {/* VIEW 1: RADAR & DISPATCH (Clean Full Map with Collapsible Controls) */}
+      {activeTab === 'radar' && (
+        <div className="relative w-full h-full">
+          <RadarMap
+            hospitals={hospitals}
+            selectedHospitalId={selectedHospitalId}
+            onSelectHospital={setSelectedHospitalId}
+            matches={matches}
+            activeDispatches={dispatches}
+            focusedDispatchId={focusedDispatchId}
+            userLocation={userLocation}
+          />
 
-      {/* AI Dispatch Sidebar */}
-      <DispatchSidebar
-        hospitals={hospitals}
-        selectedHospitalId={selectedHospitalId}
-        onSelectHospital={setSelectedHospitalId}
-        recipientType={recipientType}
-        setRecipientType={setRecipientType}
-        urgency={urgency}
-        setUrgency={setUrgency}
-        matches={matches}
-        activeDispatches={dispatches}
-        onDispatch={handleDispatch}
-        onOpenInterHospital={() => setShowInterHospital(true)}
-        onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
-        onOpenMatrix={() => setShowMatrixModal(true)}
-      />
+          <DispatchSidebar
+            hospitals={hospitals}
+            selectedHospitalId={selectedHospitalId}
+            onSelectHospital={setSelectedHospitalId}
+            recipientType={recipientType}
+            setRecipientType={setRecipientType}
+            urgency={urgency}
+            setUrgency={setUrgency}
+            matches={matches}
+            activeDispatches={dispatches}
+            onDispatch={handleDispatch}
+            onOpenInterHospital={() => setShowInterHospital(true)}
+            onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
+            onOpenMatrix={() => setActiveTab('reserves')}
+          />
 
-      {/* Live Telemetry Overlay */}
-      <TelemetryOverlay
-        dispatches={dispatches}
-        focusedDispatchId={focusedDispatchId}
-        onFocusDispatch={setFocusedDispatchId}
-        onConfirmReceipt={handleConfirmReceipt}
-      />
+          <TelemetryOverlay
+            dispatches={dispatches}
+            focusedDispatchId={focusedDispatchId}
+            onFocusDispatch={setFocusedDispatchId}
+            onConfirmReceipt={handleConfirmReceipt}
+          />
+        </div>
+      )}
 
-      {/* Modals */}
+      {/* VIEW 2: DELIVERY TRACKER */}
+      {activeTab === 'tracker' && (
+        <DeliveryTrackerView
+          activeDispatches={dispatches}
+          onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
+        />
+      )}
+
+      {/* VIEW 3: BLOOD RESERVES & MATRIX */}
+      {activeTab === 'reserves' && (
+        <ReservesView
+          hospitals={hospitals}
+          onOpenInterHospital={() => setShowInterHospital(true)}
+          onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
+        />
+      )}
+
+      {/* VIEW 4: HERO COMMUNITY & APPOINTMENTS */}
+      {activeTab === 'community' && (
+        <CommunityView
+          user={user}
+          hospitals={hospitals}
+          onOpenAppointments={() => setShowAppointments(true)}
+          onOpenEligibility={() => setShowEligibilityModal(true)}
+        />
+      )}
+
+      {/* AUTH MODAL */}
       {showAuthModal && (
         <AuthModal
           onClose={() => setShowAuthModal(false)}
@@ -259,6 +329,7 @@ export default function App() {
         />
       )}
 
+      {/* PROFILE MODAL */}
       {showProfileModal && (
         <UserProfileModal
           user={user}
@@ -266,18 +337,27 @@ export default function App() {
           onLogout={handleLogout}
           onProfileUpdated={(updated) => {
             setUser(updated);
-            showToast('Profile saved successfully.', 'success');
+            showToast('Profile updated successfully.', 'success');
           }}
         />
       )}
 
-      {showOrderTracking && (
-        <OrderTrackingModal
-          onClose={() => setShowOrderTracking(false)}
-          activeDispatches={dispatches}
+      {/* EMERGENCY REQUEST MODAL */}
+      {showEmergencyRequest && (
+        <EmergencyRequestModal
+          onClose={() => setShowEmergencyRequest(false)}
+          hospitals={hospitals}
+          onDispatchMission={(donorId, transportType) => handleDispatch(donorId, transportType)}
+          onRequestCreated={(ticket) => {
+            fetchMatches();
+            pollActiveTelemetry();
+            setActiveTab('tracker');
+            showToast(`STAT Emergency Request ${ticket.request.id} broadcasted. Delivery tracker opened.`, 'info');
+          }}
         />
       )}
 
+      {/* APPOINTMENT MODAL */}
       {showAppointments && (
         <DonorAppointmentModal
           user={user}
@@ -289,12 +369,7 @@ export default function App() {
         />
       )}
 
-      {showInventory && (
-        <HospitalInventoryModal
-          onClose={() => setShowInventory(false)}
-        />
-      )}
-
+      {/* 5-POINT HEALTH SCREENING MODAL */}
       {showEligibilityModal && (
         <DonorEligibilityModal
           onClose={() => setShowEligibilityModal(false)}
@@ -302,56 +377,19 @@ export default function App() {
         />
       )}
 
+      {/* REGISTER DONOR MODAL */}
       {showRegisterDonor && (
         <RegisterDonorModal
           onClose={() => setShowRegisterDonor(false)}
           onRegistered={() => {
             fetchMatches();
             fetchHospitals();
-            showToast('New emergency donor registered and visible on radar.', 'success');
+            showToast('New emergency donor registered in the network.', 'success');
           }}
         />
       )}
 
-      {showAdminModal && (
-        <AdminPortalModal
-          onClose={() => setShowAdminModal(false)}
-          onDataChange={() => {
-            fetchMatches();
-            fetchHospitals();
-            pollActiveTelemetry();
-          }}
-        />
-      )}
-
-      {showMatrixModal && (
-        <BloodMatrixModal
-          onClose={() => setShowMatrixModal(false)}
-          selectedType={recipientType}
-          onSelectType={setRecipientType}
-        />
-      )}
-
-      {showEmergencyRequest && (
-        <EmergencyRequestModal
-          onClose={() => setShowEmergencyRequest(false)}
-          hospitals={hospitals}
-          onDispatchMission={(donorId, transportType) => handleDispatch(donorId, transportType)}
-          onRequestCreated={(ticket) => {
-            fetchMatches();
-            pollActiveTelemetry();
-            showToast(`STAT Emergency Request ${ticket.request.id} broadcasted.`, 'info');
-          }}
-        />
-      )}
-
-      {showLeaderboard && (
-        <DonorLeaderboardModal
-          onClose={() => setShowLeaderboard(false)}
-          activeHospitalName={currentHospital?.name}
-        />
-      )}
-
+      {/* INTER-HOSPITAL DRONE TRANSFER MODAL */}
       {showInterHospital && (
         <InterHospitalTransferModal
           onClose={() => setShowInterHospital(false)}
@@ -360,7 +398,20 @@ export default function App() {
             setDispatches(prev => [newDisp, ...prev]);
             setFocusedDispatchId(newDisp.id);
             fetchHospitals();
+            setActiveTab('radar');
             showToast(`Inter-hospital drone transfer ${newDisp.id} launched.`, 'info');
+          }}
+        />
+      )}
+
+      {/* ROOT ADMIN COMMAND MODAL */}
+      {showAdminModal && (
+        <AdminPortalModal
+          onClose={() => setShowAdminModal(false)}
+          onDataChange={() => {
+            fetchMatches();
+            fetchHospitals();
+            pollActiveTelemetry();
           }}
         />
       )}

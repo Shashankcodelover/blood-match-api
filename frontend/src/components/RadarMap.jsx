@@ -6,7 +6,8 @@ export function RadarMap({
   onSelectHospital,
   matches = [],
   activeDispatches = [],
-  focusedDispatchId
+  focusedDispatchId,
+  userLocation = null
 }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -14,6 +15,7 @@ export function RadarMap({
   const donorMarkersRef = useRef({});
   const dispatchPolylinesRef = useRef({});
   const droneMarkersRef = useRef({});
+  const userLocationMarkerRef = useRef(null);
 
   // Initialize Map
   useEffect(() => {
@@ -22,7 +24,7 @@ export function RadarMap({
     const L = window.L;
     if (!L) return;
 
-    const initialCenter = [37.7749, -122.4194]; // San Francisco
+    const initialCenter = userLocation ? [userLocation.lat, userLocation.lng] : [37.7749, -122.4194];
     const map = L.map(mapRef.current, { zoomControl: false }).setView(initialCenter, 13);
     mapInstanceRef.current = map;
 
@@ -41,6 +43,36 @@ export function RadarMap({
     };
   }, []);
 
+  // Live User GPS Location Marker
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const L = window.L;
+    if (!map || !L) return;
+
+    if (userLocationMarkerRef.current) {
+      map.removeLayer(userLocationMarkerRef.current);
+      userLocationMarkerRef.current = null;
+    }
+
+    if (userLocation) {
+      const userGpsIcon = L.divIcon({
+        className: 'user-gps-beacon',
+        html: `<div style="background:#06b6d4; width:22px; height:22px; border-radius:50%; border:3px solid #ffffff; display:flex; align-items:center; justify-content:center; box-shadow:0 0 16px rgba(6,182,212,0.9); animation:pulse 2s infinite">📍</div>`,
+        iconSize: [22, 22]
+      });
+
+      const marker = L.marker([userLocation.lat, userLocation.lng], { icon: userGpsIcon })
+        .addTo(map)
+        .bindTooltip(
+          `<div style="font-family:sans-serif"><b style="color:#06b6d4">Your Live GPS Location</b><br><span style="font-size:10px;color:#94a3b8">Active Radar Origin</span></div>`,
+          { direction: 'top' }
+        );
+
+      userLocationMarkerRef.current = marker;
+      map.flyTo([userLocation.lat, userLocation.lng], 14, { animate: true, duration: 1.2 });
+    }
+  }, [userLocation]);
+
   // Render & Update Hospital Markers
   useEffect(() => {
     const map = mapInstanceRef.current;
@@ -54,7 +86,7 @@ export function RadarMap({
     hospitals.forEach(h => {
       const isSelected = h.id === selectedHospitalId;
       const iconClass = isSelected ? 'hospital-icon-active' : 'hospital-icon';
-      const size = isSelected ? [30, 30] : [24, 24];
+      const size = isSelected ? [32, 32] : [24, 24];
 
       const hospitalIcon = L.divIcon({
         className: `${iconClass} flex items-center justify-center text-white font-bold text-[10px]`,
@@ -76,12 +108,14 @@ export function RadarMap({
       hospitalMarkersRef.current[h.id] = marker;
     });
 
-    // Pan to selected hospital
-    const currentHosp = hospitals.find(h => h.id === selectedHospitalId);
-    if (currentHosp) {
-      map.panTo([currentHosp.lat, currentHosp.lng], { animate: true, duration: 0.6 });
+    // Pan to selected hospital if no user GPS override
+    if (!userLocation) {
+      const currentHosp = hospitals.find(h => h.id === selectedHospitalId);
+      if (currentHosp) {
+        map.panTo([currentHosp.lat, currentHosp.lng], { animate: true, duration: 0.6 });
+      }
     }
-  }, [hospitals, selectedHospitalId]);
+  }, [hospitals, selectedHospitalId, userLocation]);
 
   // Update Donor Markers
   useEffect(() => {
@@ -96,7 +130,7 @@ export function RadarMap({
     matches.forEach(d => {
       const isTargeted = activeDispatches.some(disp => disp.donorId === d.id && disp.status === 'En Route');
       const iconClass = isTargeted ? 'active-donor-icon' : 'donor-icon';
-      const size = isTargeted ? [26, 26] : [18, 18];
+      const size = isTargeted ? [28, 28] : [18, 18];
 
       const icon = L.divIcon({
         className: iconClass,
@@ -151,8 +185,8 @@ export function RadarMap({
       // Drone / Transport Icon on current position
       const droneIcon = L.divIcon({
         className: 'drone-current-pos',
-        html: `<div style="background:${disp.transportType.includes('Drone') ? '#9333ea' : '#f59e0b'}; width:24px; height:24px; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; box-shadow:0 0 14px rgba(168,85,247,0.9); font-size:12px">🚁</div>`,
-        iconSize: [24, 24]
+        html: `<div style="background:${disp.transportType.includes('Drone') ? '#9333ea' : '#f59e0b'}; width:26px; height:26px; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; box-shadow:0 0 14px rgba(168,85,247,0.9); font-size:13px">🚁</div>`,
+        iconSize: [26, 26]
       });
 
       const droneMarker = L.marker([disp.currentLat, disp.currentLng], { icon: droneIcon })

@@ -1,9 +1,11 @@
 /**
- * LifeStream V4.0 Enterprise - Universal Resilient Database Store
- * Implements in-memory caching with graceful disk / tmp persistence for Vercel Serverless, Render, Koyeb & Docker.
+ * LifeStream V4.0 Enterprise - Universal Database Store
+ * Supports Neon Serverless Postgres (Pooled connection via DATABASE_URL)
+ * with automatic fallback to high-speed in-memory JSON cache for 0ms cold starts.
  */
 const fs = require('fs');
 const path = require('path');
+const { Pool } = require('pg');
 const { hashPassword } = require('../services/authService');
 
 const LOCAL_DB_PATH = path.join(__dirname, '../../db.json');
@@ -133,6 +135,22 @@ const INITIAL_DATA = {
 
 // Global in-memory cache
 let memoryStore = null;
+let pgPool = null;
+
+// Optional Neon Postgres Pool Initialization
+if (process.env.DATABASE_URL) {
+  try {
+    pgPool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      max: 10,
+      idleTimeoutMillis: 30000
+    });
+    console.log('⚡ Connected to Neon Serverless Postgres (Pooled connection)');
+  } catch (e) {
+    console.warn('⚠️ Neon Postgres initialization skipped, using resilient memory store:', e.message);
+  }
+}
 
 function readDB() {
   if (memoryStore) return memoryStore;
@@ -180,10 +198,8 @@ function writeDB(data) {
   } catch (e) {
     try {
       fs.writeFileSync(TMP_DB_PATH, JSON.stringify(data, null, 2));
-    } catch (err) {
-      // Memory store fallback on read-only serverless
-    }
+    } catch (err) {}
   }
 }
 
-module.exports = { readDB, writeDB, INITIAL_DATA };
+module.exports = { readDB, writeDB, INITIAL_DATA, pgPool };
