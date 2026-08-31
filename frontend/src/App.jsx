@@ -11,9 +11,32 @@ import { EmergencyRequestModal } from './components/EmergencyRequestModal';
 import { DonorLeaderboardModal } from './components/DonorLeaderboardModal';
 import { InterHospitalTransferModal } from './components/InterHospitalTransferModal';
 import { DonorEligibilityModal } from './components/DonorEligibilityModal';
+import { AuthModal } from './components/AuthModal';
+import { UserProfileModal } from './components/UserProfileModal';
+import { OrderTrackingModal } from './components/OrderTrackingModal';
+import { DonorAppointmentModal } from './components/DonorAppointmentModal';
+import { ToastNotification } from './components/ToastNotification';
 import { playDispatchSonar, playArrivalChime, toggleSound, isSoundEnabled } from './utils/audioAlerts';
 
 export default function App() {
+  // Authentication State
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('lifestream_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  // Operational State
   const [recipientType, setRecipientType] = useState('O-');
   const [urgency, setUrgency] = useState('critical');
   const [hospitals, setHospitals] = useState([]);
@@ -24,6 +47,10 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(true);
 
   // Modal Visibility States
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showOrderTracking, setShowOrderTracking] = useState(false);
+  const [showAppointments, setShowAppointments] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const [showRegisterDonor, setShowRegisterDonor] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -82,6 +109,7 @@ export default function App() {
         if (disp.status === 'Arrived' && !acknowledgedArrivedRef.current.has(disp.id)) {
           acknowledgedArrivedRef.current.add(disp.id);
           playArrivalChime();
+          showToast(`🎉 Rooftop Arrival: ${disp.transportType} delivered ${disp.donorBloodType} blood to ${disp.hospitalName}.`, 'success');
         }
       });
     } catch (e) {
@@ -114,6 +142,7 @@ export default function App() {
       setDispatches(prev => [newDisp, ...prev]);
       setFocusedDispatchId(newDisp.id);
       fetchMatches();
+      showToast(`🚀 ${newDisp.transportType} ${newDisp.id} launched for emergency payload.`, 'info');
     } catch (err) {
       console.error('Dispatch error:', err);
     }
@@ -131,6 +160,7 @@ export default function App() {
       pollActiveTelemetry();
       fetchHospitals();
       fetchMatches();
+      showToast(`✓ Hospital intake logged by ${badgeId}. Blood inventory updated.`, 'success');
     } catch (err) {
       console.error('Receipt confirmation error:', err);
     }
@@ -139,6 +169,20 @@ export default function App() {
   const handleSoundToggle = () => {
     const next = toggleSound();
     setSoundOn(next);
+    showToast(next ? 'Sound alerts enabled.' : 'Sound muted.', 'info');
+  };
+
+  const handleAuthSuccess = (authUser, token) => {
+    setUser(authUser);
+    showToast(`Welcome back, ${authUser.name}! Authenticated as ${authUser.role.toUpperCase()}.`, 'success');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('lifestream_token');
+    localStorage.removeItem('lifestream_user');
+    setUser(null);
+    setShowProfileModal(false);
+    showToast('Signed out of LifeStream session.', 'info');
   };
 
   const activeInFlightCount = dispatches.filter(d => d.status === 'En Route').length;
@@ -146,8 +190,14 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden select-none bg-slate-950 font-sans text-slate-100">
+      {/* Toast Alert */}
+      <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
+
       {/* Navbar Header */}
       <Navbar
+        user={user}
+        onOpenAuth={() => setShowAuthModal(true)}
+        onOpenProfile={() => setShowProfileModal(true)}
         onOpenInventory={() => setShowInventory(true)}
         onOpenRegisterDonor={() => setShowEligibilityModal(true)}
         onOpenAdmin={() => setShowAdminModal(true)}
@@ -155,6 +205,8 @@ export default function App() {
         onOpenEmergencyRequest={() => setShowEmergencyRequest(true)}
         onOpenLeaderboard={() => setShowLeaderboard(true)}
         onOpenInterHospital={() => setShowInterHospital(true)}
+        onOpenOrderTracking={() => setShowOrderTracking(true)}
+        onOpenAppointments={() => setShowAppointments(true)}
         onToggleSound={handleSoundToggle}
         soundOn={soundOn}
         activeDispatchCount={activeInFlightCount}
@@ -196,6 +248,43 @@ export default function App() {
       />
 
       {/* Modals */}
+      {showAuthModal && (
+        <AuthModal
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess}
+        />
+      )}
+
+      {showProfileModal && (
+        <UserProfileModal
+          user={user}
+          onClose={() => setShowProfileModal(false)}
+          onLogout={handleLogout}
+          onProfileUpdated={(updated) => {
+            setUser(updated);
+            showToast('Profile saved successfully.', 'success');
+          }}
+        />
+      )}
+
+      {showOrderTracking && (
+        <OrderTrackingModal
+          onClose={() => setShowOrderTracking(false)}
+          activeDispatches={dispatches}
+        />
+      )}
+
+      {showAppointments && (
+        <DonorAppointmentModal
+          user={user}
+          hospitals={hospitals}
+          onClose={() => setShowAppointments(false)}
+          onAppointmentBooked={() => {
+            showToast('Blood donation appointment successfully booked.', 'success');
+          }}
+        />
+      )}
+
       {showInventory && (
         <HospitalInventoryModal
           onClose={() => setShowInventory(false)}
@@ -215,6 +304,7 @@ export default function App() {
           onRegistered={() => {
             fetchMatches();
             fetchHospitals();
+            showToast('New emergency donor registered and visible on radar.', 'success');
           }}
         />
       )}
@@ -243,9 +333,10 @@ export default function App() {
           onClose={() => setShowEmergencyRequest(false)}
           hospitals={hospitals}
           onDispatchMission={(donorId, transportType) => handleDispatch(donorId, transportType)}
-          onRequestCreated={() => {
+          onRequestCreated={(ticket) => {
             fetchMatches();
             pollActiveTelemetry();
+            showToast(`STAT Emergency Request ${ticket.request.id} broadcasted.`, 'info');
           }}
         />
       )}
@@ -265,6 +356,7 @@ export default function App() {
             setDispatches(prev => [newDisp, ...prev]);
             setFocusedDispatchId(newDisp.id);
             fetchHospitals();
+            showToast(`Inter-hospital drone transfer ${newDisp.id} launched.`, 'info');
           }}
         />
       )}

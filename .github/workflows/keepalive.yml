@@ -1,0 +1,16 @@
+name: 24/7 Anti-Sleep Keep-Alive Pulse
+
+on:
+  schedule:
+    # Runs every 10 minutes to prevent free-tier backends (Render, Koyeb, Railway) from sleeping
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Heartbeat Pulse
+        run: |
+          echo "Sending 24/7 heartbeat keep-alive pulse to LifeStream deployment..."
+          curl -s -f "https://blood-match-api.onrender.com/health" || curl -s -f "https://blood-match-api.vercel.app/health" || echo "Keep-alive ping transmitted."

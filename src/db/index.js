@@ -1,12 +1,78 @@
 /**
- * LifeStream V3.2 - Master Persistent Database Store
+ * LifeStream V4.0 Enterprise - Master Persistent Database Store
  */
 const fs = require('fs');
 const path = require('path');
+const { hashPassword } = require('../services/authService');
 
 const DB_PATH = path.join(__dirname, '../../db.json');
 
+// Initialize default seed users with hashed passwords
+const seedUser1 = hashPassword('doctor123');
+const seedUser2 = hashPassword('donor123');
+const seedUser3 = hashPassword('patient123');
+const seedUser4 = hashPassword('admin123');
+
 const INITIAL_DATA = {
+  users: [
+    {
+      id: 'USR-DOC-01',
+      name: 'Dr. Evelyn Vance, MD',
+      email: 'doctor@sfgeneral.org',
+      passwordHash: seedUser1.hash,
+      salt: seedUser1.salt,
+      role: 'hospital',
+      hospitalId: 'HOSP-01',
+      hospitalName: 'SF General Trauma Center',
+      department: 'Emergency & Trauma Surgery',
+      phone: '+1 415-206-8000',
+      badgeNumber: 'MD-7712',
+      createdAt: '2026-01-10T08:00:00.000Z'
+    },
+    {
+      id: 'USR-DNR-01',
+      name: 'Marcus Vance',
+      email: 'marcus@lifestream.org',
+      passwordHash: seedUser2.hash,
+      salt: seedUser2.salt,
+      role: 'donor',
+      bloodType: 'O-',
+      phone: '+1 415-555-0166',
+      donorId: 5,
+      availabilityStatus: 'Available for Immediate Dispatch',
+      totalDonations: 15,
+      reliabilityScore: 98,
+      lat: 37.7550,
+      lng: -122.4350,
+      badges: ['Universal O- Vanguard', 'Life Saver', '15+ Club'],
+      createdAt: '2026-01-12T10:00:00.000Z'
+    },
+    {
+      id: 'USR-PAT-01',
+      name: 'Robert Martinez',
+      email: 'robert@martinez.com',
+      passwordHash: seedUser3.hash,
+      salt: seedUser3.salt,
+      role: 'patient',
+      bloodType: 'O-',
+      phone: '+1 415-555-0911',
+      emergencyContact: 'Maria Martinez (+1 415-555-0912)',
+      hospitalId: 'HOSP-01',
+      medicalNotes: 'Acute internal thoracic trauma. Universal O- blood required.',
+      createdAt: '2026-08-20T14:30:00.000Z'
+    },
+    {
+      id: 'USR-ADM-01',
+      name: 'Chief Logistics Officer Alex Sterling',
+      email: 'admin@lifestream.org',
+      passwordHash: seedUser4.hash,
+      salt: seedUser4.salt,
+      role: 'admin',
+      phone: '+1 415-555-0000',
+      badgeNumber: 'ROOT-EXEC-1',
+      createdAt: '2026-01-01T00:00:00.000Z'
+    }
+  ],
   hospitals: [
     { id: 'HOSP-01', name: 'SF General Trauma Center', code: 'SFG', lat: 37.7749, lng: -122.4194, phone: '+1 415-206-8000', helipad: true, inventory: { 'O-': 2, 'O+': 5, 'A+': 8, 'A-': 3, 'B+': 4, 'B-': 1, 'AB+': 6, 'AB-': 2 } },
     { id: 'HOSP-02', name: 'UCSF Medical Center Parnassus', code: 'UCSF', lat: 37.7631, lng: -122.4578, phone: '+1 415-476-1000', helipad: true, inventory: { 'O-': 0, 'O+': 3, 'A+': 6, 'A-': 1, 'B+': 2, 'B-': 0, 'AB+': 4, 'AB-': 1 } },
@@ -38,7 +104,23 @@ const INITIAL_DATA = {
       status: 'In Progress',
       contactPhone: '+1 415-555-0911',
       medicalReason: 'Severe thoracic trauma from highway incident. Massive blood loss protocol activated.',
-      createdAt: new Date(Date.now() - 3600000).toISOString()
+      custodySeal: 'E39F8A2D104B76C1',
+      trackingStep: 3, // 1: Placed, 2: Matched, 3: In Flight, 4: Rooftop Delivery, 5: Transfused
+      createdAt: new Date(Date.now() - 1800000).toISOString()
+    }
+  ],
+  appointments: [
+    {
+      id: 'APT-101',
+      donorId: 5,
+      donorName: 'Marcus Vance',
+      hospitalId: 'HOSP-01',
+      hospitalName: 'SF General Trauma Center',
+      date: '2026-09-05',
+      timeSlot: '10:30 AM',
+      donationType: 'Whole Blood (O-)',
+      status: 'Confirmed',
+      createdAt: new Date().toISOString()
     }
   ],
   transfers: [],
@@ -54,10 +136,12 @@ function readDB() {
   }
   try {
     const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+    if (!data.users || data.users.length < 4) data.users = INITIAL_DATA.users;
     if (!data.hospitals || data.hospitals.length < 5) data.hospitals = INITIAL_DATA.hospitals;
     if (!data.donors || data.donors.length < 9) data.donors = INITIAL_DATA.donors;
     if (!data.dispatches) data.dispatches = [];
     if (!data.requests) data.requests = INITIAL_DATA.requests;
+    if (!data.appointments) data.appointments = INITIAL_DATA.appointments;
     if (!data.transfers) data.transfers = [];
     if (!data.alerts) data.alerts = INITIAL_DATA.alerts;
     return data;
