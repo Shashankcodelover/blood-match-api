@@ -1,7 +1,7 @@
 import React from 'react';
-import { Activity, ShieldCheck, Heart, Hospital, Plus, Radio } from 'lucide-react';
+import { Activity, ShieldCheck, Heart, Hospital, Plus, Radio, ShieldAlert } from 'lucide-react';
 
-export function Navbar({ onOpenInventory, onOpenRegisterDonor, activeDispatchCount }) {
+export function Navbar({ onOpenInventory, onOpenRegisterDonor, onOpenAdmin, activeDispatchCount }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-30 px-6 py-3.5 flex items-center justify-between glass-panel border-b border-slate-800/80">
       <div className="flex items-center gap-3">
@@ -35,10 +35,18 @@ export function Navbar({ onOpenInventory, onOpenRegisterDonor, activeDispatchCou
 
         <button
           onClick={onOpenRegisterDonor}
-          className="flex items-center gap-2 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-rose-600/25 transition-all active:scale-95"
+          className="flex items-center gap-2 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-lg shadow-rose-600/25 transition-all active:scale-95"
         >
           <Plus className="w-4 h-4" />
           <span>Register Donor</span>
+        </button>
+
+        <button
+          onClick={onOpenAdmin}
+          className="flex items-center gap-2 bg-slate-900/90 hover:bg-amber-950/40 text-amber-300 border border-amber-500/40 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95"
+        >
+          <ShieldAlert className="w-4 h-4 text-amber-400" />
+          <span>Admin Portal</span>
         </button>
       </div>
     </header>

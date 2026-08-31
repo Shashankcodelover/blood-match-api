@@ -5,6 +5,7 @@ import { DispatchSidebar } from './components/DispatchSidebar';
 import { TelemetryOverlay } from './components/TelemetryOverlay';
 import { HospitalInventoryModal } from './components/HospitalInventoryModal';
 import { RegisterDonorModal } from './components/RegisterDonorModal';
+import { AdminPortalModal } from './components/AdminPortalModal';
 
 const HOSPITAL_COORD = [37.7749, -122.4194]; // San Francisco General Hospital
 
@@ -17,6 +18,7 @@ export default function App() {
 
   const [showInventory, setShowInventory] = useState(false);
   const [showRegisterDonor, setShowRegisterDonor] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   const trackingIntervalRef = useRef(null);
 
@@ -91,6 +93,7 @@ export default function App() {
       <Navbar
         onOpenInventory={() => setShowInventory(true)}
         onOpenRegisterDonor={() => setShowRegisterDonor(true)}
+        onOpenAdmin={() => setShowAdminModal(true)}
         activeDispatchCount={activeDispatch ? 1 : 0}
       />
 
@@ -118,6 +121,12 @@ export default function App() {
       {/* Modals */}
       {showInventory && <HospitalInventoryModal onClose={() => setShowInventory(false)} />}
       {showRegisterDonor && <RegisterDonorModal onClose={() => setShowRegisterDonor(false)} onRegistered={fetchMatches} />}
+      {showAdminModal && (
+        <AdminPortalModal
+          onClose={() => setShowAdminModal(false)}
+          onDataChange={fetchMatches}
+        />
+      )}
     </div>
   );
 }

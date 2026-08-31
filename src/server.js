@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/donors', require('./routes/donors'));
 app.use('/api/dispatch', require('./routes/dispatch'));
 app.use('/api/hospitals', require('./routes/hospitals'));
+app.use('/api/admin', require('./routes/admin'));
 
 // Backward compatibility endpoints for legacy frontend compatibility
 app.get('/api/matches/:bloodType', (req, res) => {

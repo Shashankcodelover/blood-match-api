@@ -16,6 +16,7 @@ blood-match-api/
 - 🧠 **AI Match Confidence Scoring**: Evaluates donor geospatial proximity (Haversine formula), 56-day medical donation cooldowns, and reliability ratings.
 - 🏥 **Hospital Inventory Monitoring**: Live multi-hospital blood bank stock level management per blood type.
 - 👤 **Donor Registration Engine**: Instant donor onboarding with auto-geolocation and verification status.
+- 🛡️ **Administrator Command Suite**: Root dashboard for donor verification toggling, live inventory +/- adjusting, dispatch log auditing, and emergency shortage broadcasts.
 
 ## Getting Started
 
@@ -36,4 +37,13 @@ npm run dev        # Running on http://localhost:5174
 ## Architecture Highlights
 - **Geospatial Matching Engine**: Evaluates donor distance using the Haversine formula and enforces 56-day donation eligibility unless marked as Critical Emergency.
 - **Vite + Tailwind Frontend**: Componentized React architecture with glassmorphism UI, pulsing radar markers, and live telemetry overlays.
-- **RESTful Endpoints**: `/api/donors/matches/:bloodType`, `/api/dispatch`, `/api/dispatch/track/:id`, `/api/hospitals`.
+- **Admin Control Suite**: Modal dashboard with real-time KPI metrics, donor authentication badges, and cold-chain transport audit logs.
+- **RESTful Endpoints**:
+  - `/api/donors/matches/:bloodType` — AI-ranked proximity donor matching
+  - `/api/dispatch` & `/api/dispatch/track/:id` — Live mission initialization and vector tracking
+  - `/api/hospitals` — Regional hospital blood inventories & alerts
+  - `/api/admin/stats` — Operations metrics & aggregate reserve units
+  - `/api/admin/donors` — Full donor registry & verification management
+  - `/api/admin/hospitals` & `/api/admin/hospitals/:id/inventory` — Stock reserve adjusting
+  - `/api/admin/dispatches` — Transport telemetry logs & abort triggers
+  - `/api/admin/alerts` — Emergency shortage broadcast dispatcher
