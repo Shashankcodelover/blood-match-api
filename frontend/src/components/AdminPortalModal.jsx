@@ -208,25 +208,25 @@ export function AdminPortalModal({ onClose, onDataChange }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in" onClick={onClose}>
       <div
-        className="w-full max-w-5xl h-[88vh] glass-panel rounded-2xl shadow-2xl border border-slate-700/80 flex flex-col overflow-hidden relative"
+        className="w-full max-w-5xl h-[88vh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden relative"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white shadow-lg shadow-rose-600/20">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-rose-600/20">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-white">LifeStream Administrator Command Suite</h3>
-                <span className="text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full">
+                <h3 className="text-lg font-bold text-slate-900">LifeStream Administrator Command Suite</h3>
+                <span className="text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">
                   ROOT ACCESS
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Network control, hospital reserves, donor authentication & cold-chain audit</p>
+              <p className="text-xs text-slate-500">Network control, hospital reserves, donor authentication & cold-chain audit</p>
             </div>
           </div>
 
@@ -234,13 +234,13 @@ export function AdminPortalModal({ onClose, onDataChange }) {
             <button
               onClick={fetchAllData}
               title="Refresh Data"
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all"
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-200 border border-slate-200 transition-all"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-rose-400' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-rose-600' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-all"
             >
               <X className="w-5 h-5" />
             </button>
@@ -248,13 +248,13 @@ export function AdminPortalModal({ onClose, onDataChange }) {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 px-6 py-2.5 border-b border-slate-800/80 bg-slate-900/50 text-xs font-semibold overflow-x-auto">
+        <div className="flex items-center gap-2 px-6 py-2.5 border-b border-slate-200 bg-white text-xs font-semibold overflow-x-auto">
           <button
             onClick={() => setActiveTab('overview')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all ${
               activeTab === 'overview'
-                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-sm font-bold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
             <BarChart3 className="w-4 h-4" />
@@ -265,8 +265,8 @@ export function AdminPortalModal({ onClose, onDataChange }) {
             onClick={() => setActiveTab('donors')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all ${
               activeTab === 'donors'
-                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-sm font-bold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
             <Users className="w-4 h-4" />
@@ -277,8 +277,8 @@ export function AdminPortalModal({ onClose, onDataChange }) {
             onClick={() => setActiveTab('hospitals')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all ${
               activeTab === 'hospitals'
-                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-sm font-bold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
             <Hospital className="w-4 h-4" />
@@ -289,8 +289,8 @@ export function AdminPortalModal({ onClose, onDataChange }) {
             onClick={() => setActiveTab('dispatches')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all ${
               activeTab === 'dispatches'
-                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-sm font-bold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
             <Radio className="w-4 h-4" />
@@ -301,79 +301,79 @@ export function AdminPortalModal({ onClose, onDataChange }) {
             onClick={() => setActiveTab('alerts')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all ${
               activeTab === 'alerts'
-                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-rose-50 text-rose-600 border border-rose-200 shadow-sm font-bold'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
+            <AlertTriangle className="w-4 h-4 text-amber-600" />
             <span>Emergency Alerts ({alerts.length})</span>
           </button>
         </div>
 
         {/* Tab Content Body */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && stats && (
             <div className="space-y-6">
               {/* Top Metric Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Total Donors</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Total Donors</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-white">{stats.totalDonors}</span>
-                    <span className="text-[10px] text-emerald-400 font-semibold">Active</span>
+                    <span className="text-2xl font-bold text-slate-900">{stats.totalDonors}</span>
+                    <span className="text-[10px] text-emerald-600 font-semibold">Active</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Verified Network</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Verified Network</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-emerald-400">{stats.verifiedPercentage}%</span>
-                    <span className="text-[10px] text-slate-500">({stats.verifiedDonors})</span>
+                    <span className="text-2xl font-bold text-emerald-600">{stats.verifiedPercentage}%</span>
+                    <span className="text-[10px] text-slate-400">({stats.verifiedDonors})</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Trauma Centers</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Trauma Centers</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-white">{stats.totalHospitals}</span>
-                    <span className="text-[10px] text-rose-400 font-semibold">SF Bay</span>
+                    <span className="text-2xl font-bold text-slate-900">{stats.totalHospitals}</span>
+                    <span className="text-[10px] text-rose-600 font-semibold">SF Bay</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Active Drones</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Active Drones</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-rose-400">{stats.activeDispatches}</span>
-                    <span className="text-[10px] text-amber-400">In-Flight</span>
+                    <span className="text-2xl font-bold text-rose-600">{stats.activeDispatches}</span>
+                    <span className="text-[10px] text-amber-600 font-semibold">In-Flight</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Total Reserve Units</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Total Reserve</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-teal-400">{stats.totalReserveUnits}</span>
-                    <span className="text-[10px] text-slate-500">units</span>
+                    <span className="text-2xl font-bold text-sky-600">{stats.totalReserveUnits}</span>
+                    <span className="text-[10px] text-slate-400">units</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium block">Avg Reliability</span>
+                <div className="bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                  <span className="text-[11px] text-slate-500 font-medium block">Avg Reliability</span>
                   <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl font-bold text-cyan-400">{stats.avgReliability}</span>
-                    <span className="text-[10px] text-cyan-400 font-semibold">/100</span>
+                    <span className="text-2xl font-bold text-sky-600">{stats.avgReliability}</span>
+                    <span className="text-[10px] text-sky-600 font-semibold">/100</span>
                   </div>
                 </div>
               </div>
 
               {/* Regional Blood Bank Reserve Distribution */}
-              <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl">
+              <div className="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h4 className="text-sm font-bold text-white">Regional Blood Bank Reserve Aggregate</h4>
-                    <p className="text-xs text-slate-400">Total units available across all registered medical trauma centers</p>
+                    <h4 className="text-sm font-bold text-slate-900">Regional Blood Bank Reserve Aggregate</h4>
+                    <p className="text-xs text-slate-500">Total units available across all registered medical trauma centers</p>
                   </div>
-                  <span className="text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2.5 py-1 rounded-lg">
+                  <span className="text-xs font-mono bg-rose-50 text-rose-600 border border-rose-200 px-2.5 py-1 rounded-xl font-bold">
                     {stats.totalReserveUnits} Total Units
                   </span>
                 </div>
@@ -385,18 +385,18 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     return (
                       <div
                         key={type}
-                        className={`p-3 rounded-xl border text-center transition-all ${
+                        className={`p-3 rounded-2xl border text-center transition-all ${
                           isCritical
-                            ? 'bg-rose-950/40 border-rose-500/40 text-rose-300'
-                            : 'bg-slate-950/60 border-slate-800 text-slate-200'
+                            ? 'bg-rose-50 border-rose-200 text-rose-700'
+                            : 'bg-slate-50 border-slate-200 text-slate-800'
                         }`}
                       >
                         <div className="flex items-center justify-center gap-1">
                           <span className="font-bold text-xs">{type}</span>
-                          {isUniversal && <span className="text-[9px] bg-red-500 text-white px-1 rounded">UNIV</span>}
+                          {isUniversal && <span className="text-[9px] bg-rose-600 text-white px-1 rounded font-bold">UNIV</span>}
                         </div>
                         <span className="text-xl font-bold font-mono block mt-1">{units}</span>
-                        <span className="text-[10px] text-slate-500 block">units in bank</span>
+                        <span className="text-[10px] text-slate-400 block">units in bank</span>
                       </div>
                     );
                   })}
@@ -405,24 +405,24 @@ export function AdminPortalModal({ onClose, onDataChange }) {
 
               {/* Quick Actions & Shortage Alerts */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Live Emergency Shortage Broadcasts</h4>
+                <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+                  <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Live Emergency Shortage Broadcasts</h4>
                   {alerts.length === 0 ? (
-                    <p className="text-xs text-slate-500 italic py-4">No active blood shortage broadcasts currently active.</p>
+                    <p className="text-xs text-slate-400 italic py-4">No active blood shortage broadcasts currently active.</p>
                   ) : (
                     <div className="space-y-2">
                       {alerts.map(a => (
-                        <div key={a.id} className="bg-rose-950/30 border border-rose-500/30 p-3 rounded-lg flex items-start justify-between gap-3">
+                        <div key={a.id} className="bg-rose-50 border border-rose-200 p-3 rounded-xl flex items-start justify-between gap-3">
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-rose-400">[{a.bloodType}]</span>
-                              <span className="text-xs font-semibold text-slate-200">{a.message}</span>
+                              <span className="text-xs font-bold text-rose-600">[{a.bloodType}]</span>
+                              <span className="text-xs font-semibold text-slate-900">{a.message}</span>
                             </div>
                             <span className="text-[10px] text-slate-500 block mt-1">Center: {a.hospitalId} • {new Date(a.createdAt).toLocaleTimeString()}</span>
                           </div>
                           <button
                             onClick={() => dismissAlert(a.id)}
-                            className="text-[10px] text-rose-400 hover:text-white bg-rose-500/20 px-2 py-1 rounded border border-rose-500/30 hover:bg-rose-500/40 transition-all"
+                            className="text-[10px] text-rose-700 hover:text-white bg-white hover:bg-rose-600 px-2 py-1 rounded border border-rose-300 transition-all font-semibold"
                           >
                             Resolve
                           </button>
@@ -432,27 +432,27 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                   )}
                 </div>
 
-                <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Recent Dispatch Vectors</h4>
+                <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+                  <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Recent Dispatch Vectors</h4>
                   {dispatches.length === 0 ? (
-                    <p className="text-xs text-slate-500 italic py-4">No dispatch missions recorded yet.</p>
+                    <p className="text-xs text-slate-400 italic py-4">No dispatch missions recorded yet.</p>
                   ) : (
                     <div className="space-y-2">
                       {dispatches.slice(0, 3).map(d => (
-                        <div key={d.id} className="bg-slate-950/60 border border-slate-800/80 p-3 rounded-lg flex items-center justify-between">
+                        <div key={d.id} className="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between">
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-white">{d.id}</span>
-                              <span className="text-[10px] font-mono bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">{d.transportType}</span>
+                              <span className="text-xs font-bold text-slate-900">{d.id}</span>
+                              <span className="text-[10px] font-mono bg-white border border-slate-200 text-slate-600 px-1.5 py-0.5 rounded">{d.transportType}</span>
                             </div>
-                            <p className="text-[11px] text-slate-400 mt-0.5">{d.donorName} ({d.donorBloodType}) → {d.hospitalName}</p>
+                            <p className="text-[11px] text-slate-600 mt-0.5">{d.donorName} ({d.donorBloodType}) → {d.hospitalName}</p>
                           </div>
                           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
                             d.status === 'En Route'
-                              ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                              ? 'bg-amber-50 border-amber-200 text-amber-700'
                               : d.status === 'Arrived'
-                              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                              : 'bg-slate-800 border-slate-700 text-slate-400'
+                              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                              : 'bg-slate-100 border-slate-200 text-slate-600'
                           }`}>
                             {d.status}
                           </span>
@@ -469,12 +469,12 @@ export function AdminPortalModal({ onClose, onDataChange }) {
           {activeTab === 'donors' && (
             <div className="space-y-4">
               {/* Action bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/70 p-3.5 rounded-xl border border-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                 <div className="flex flex-wrap items-center gap-2 flex-1">
                   <div className="relative flex-1 min-w-[200px]">
-                    <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                     <input
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500/60 transition-all"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 outline-none focus:border-rose-500 transition-all"
                       placeholder="Search donor name or phone..."
                       value={donorSearch}
                       onChange={e => setDonorSearch(e.target.value)}
@@ -482,7 +482,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                   </div>
 
                   <select
-                    className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 outline-none"
+                    className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none"
                     value={donorBloodFilter}
                     onChange={e => setDonorBloodFilter(e.target.value)}
                   >
@@ -491,7 +491,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                   </select>
 
                   <select
-                    className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 outline-none"
+                    className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none"
                     value={donorVerifiedFilter}
                     onChange={e => setDonorVerifiedFilter(e.target.value)}
                   >
@@ -503,7 +503,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
 
                 <button
                   onClick={() => setShowAddDonor(!showAddDonor)}
-                  className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md shadow-rose-600/20"
+                  className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Donor</span>
@@ -512,11 +512,11 @@ export function AdminPortalModal({ onClose, onDataChange }) {
 
               {/* Add Donor Form Drawer */}
               {showAddDonor && (
-                <form onSubmit={handleCreateDonor} className="bg-slate-900/90 border border-rose-500/40 p-4 rounded-xl grid grid-cols-1 sm:grid-cols-5 gap-3">
+                <form onSubmit={handleCreateDonor} className="bg-white border border-rose-300 p-4 rounded-2xl shadow-sm grid grid-cols-1 sm:grid-cols-5 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Full Name</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Full Name</label>
                     <input
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       placeholder="e.g. Rachel Adams"
                       value={newDonor.name}
                       onChange={e => setNewDonor(d => ({ ...d, name: e.target.value }))}
@@ -524,9 +524,9 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Blood Type</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Blood Type</label>
                     <select
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newDonor.bloodType}
                       onChange={e => setNewDonor(d => ({ ...d, bloodType: e.target.value }))}
                     >
@@ -534,21 +534,21 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Phone</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Phone</label>
                     <input
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       placeholder="+1 415-555-0100"
                       value={newDonor.phone}
                       onChange={e => setNewDonor(d => ({ ...d, phone: e.target.value }))}
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Reliability Score</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Reliability Score</label>
                     <input
                       type="number"
                       min="50"
                       max="100"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newDonor.reliabilityScore}
                       onChange={e => setNewDonor(d => ({ ...d, reliabilityScore: Number(e.target.value) }))}
                     />
@@ -563,7 +563,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     <button
                       type="button"
                       onClick={() => setShowAddDonor(false)}
-                      className="px-2.5 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs"
+                      className="px-2.5 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-xs"
                     >
                       Cancel
                     </button>
@@ -572,10 +572,10 @@ export function AdminPortalModal({ onClose, onDataChange }) {
               )}
 
               {/* Donors Table */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden">
+              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
+                  <table className="w-full text-left text-xs text-slate-700">
+                    <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200">
                       <tr>
                         <th className="px-4 py-3">Donor Name</th>
                         <th className="px-4 py-3">Blood Type</th>
@@ -586,27 +586,27 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                         <th className="px-4 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-slate-100">
                       {donors.map(donor => (
-                        <tr key={donor.id} className="hover:bg-slate-800/40 transition-all">
-                          <td className="px-4 py-3 font-semibold text-white">
+                        <tr key={donor.id} className="hover:bg-slate-50/80 transition-all">
+                          <td className="px-4 py-3 font-semibold text-slate-900">
                             <div className="flex items-center gap-2">
                               <span>{donor.name}</span>
                               {donor.bloodType === 'O-' && (
-                                <span className="text-[9px] bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.2 rounded font-mono">
+                                <span className="text-[9px] bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.2 rounded font-mono font-bold">
                                   Universal
                                 </span>
                               )}
                             </div>
                           </td>
-                          <td className="px-4 py-3 font-mono font-bold text-rose-400">{donor.bloodType}</td>
-                          <td className="px-4 py-3 text-slate-400 font-mono">{donor.phone || 'N/A'}</td>
+                          <td className="px-4 py-3 font-mono font-bold text-rose-600">{donor.bloodType}</td>
+                          <td className="px-4 py-3 text-slate-500 font-mono">{donor.phone || 'N/A'}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-cyan-400">{donor.reliabilityScore || 90}%</span>
-                              <div className="w-12 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                              <span className="font-bold text-sky-600">{donor.reliabilityScore || 90}%</span>
+                              <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                                 <div
-                                  className="h-full bg-cyan-400 rounded-full"
+                                  className="h-full bg-sky-500 rounded-full"
                                   style={{ width: `${donor.reliabilityScore || 90}%` }}
                                 />
                               </div>
@@ -618,18 +618,18 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                               onClick={() => toggleDonorVerification(donor.id, donor.isVerified)}
                               className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold border transition-all ${
                                 donor.isVerified
-                                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
-                                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
+                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
+                                  : 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100'
                               }`}
                             >
                               {donor.isVerified ? (
                                 <>
-                                  <ShieldCheck className="w-3 h-3" />
+                                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
                                   <span>Verified</span>
                                 </>
                               ) : (
                                 <>
-                                  <AlertTriangle className="w-3 h-3" />
+                                  <AlertTriangle className="w-3 h-3 text-amber-600" />
                                   <span>Pending</span>
                                 </>
                               )}
@@ -638,7 +638,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                           <td className="px-4 py-3 text-right">
                             <button
                               onClick={() => deleteDonor(donor.id)}
-                              className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all"
                               title="Delete Donor"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -656,14 +656,14 @@ export function AdminPortalModal({ onClose, onDataChange }) {
           {/* TAB 3: HOSPITAL BLOOD BANKS & INVENTORY */}
           {activeTab === 'hospitals' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between bg-slate-900/70 p-3.5 rounded-xl border border-slate-800">
+              <div className="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-bold text-white">Trauma Center Reserve Management</h4>
-                  <p className="text-[11px] text-slate-400">Inline adjust inventory levels for emergency stock matching</p>
+                  <h4 className="text-xs font-bold text-slate-900">Trauma Center Reserve Management</h4>
+                  <p className="text-[11px] text-slate-500">Inline adjust inventory levels for emergency stock matching</p>
                 </div>
                 <button
                   onClick={() => setShowAddHospital(!showAddHospital)}
-                  className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md shadow-rose-600/20"
+                  className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Medical Center</span>
@@ -672,11 +672,11 @@ export function AdminPortalModal({ onClose, onDataChange }) {
 
               {/* Add Hospital Form */}
               {showAddHospital && (
-                <form onSubmit={handleCreateHospital} className="bg-slate-900/90 border border-rose-500/40 p-4 rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <form onSubmit={handleCreateHospital} className="bg-white border border-rose-300 p-4 rounded-2xl shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Center Name</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Center Name</label>
                     <input
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       placeholder="e.g. Kaiser Permanente SF"
                       value={newHospital.name}
                       onChange={e => setNewHospital(h => ({ ...h, name: e.target.value }))}
@@ -684,21 +684,21 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Latitude</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Latitude</label>
                     <input
                       type="number"
                       step="0.0001"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newHospital.lat}
                       onChange={e => setNewHospital(h => ({ ...h, lat: Number(e.target.value) }))}
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Longitude</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Longitude</label>
                     <input
                       type="number"
                       step="0.0001"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newHospital.lng}
                       onChange={e => setNewHospital(h => ({ ...h, lng: Number(e.target.value) }))}
                     />
@@ -713,7 +713,7 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     <button
                       type="button"
                       onClick={() => setShowAddHospital(false)}
-                      className="px-2.5 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs"
+                      className="px-2.5 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-xs"
                     >
                       Cancel
                     </button>
@@ -724,18 +724,18 @@ export function AdminPortalModal({ onClose, onDataChange }) {
               {/* Hospital Cards with +/- buttons */}
               <div className="space-y-4">
                 {hospitals.map(h => (
-                  <div key={h.id} className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl">
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800/80">
+                  <div key={h.id} className="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
                       <div>
                         <div className="flex items-center gap-2">
-                          <Hospital className="w-4 h-4 text-rose-400" />
-                          <h4 className="font-bold text-sm text-white">{h.name}</h4>
-                          <span className="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full">{h.id}</span>
+                          <Hospital className="w-4 h-4 text-rose-600" />
+                          <h4 className="font-bold text-sm text-slate-900">{h.name}</h4>
+                          <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{h.id}</span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-mono mt-0.5">GPS: [{h.lat}, {h.lng}]</p>
                       </div>
 
-                      <span className="text-xs font-bold text-slate-300">
+                      <span className="text-xs font-bold text-slate-700">
                         Total Stock: {Object.values(h.inventory || {}).reduce((a, b) => a + b, 0)} Units
                       </span>
                     </div>
@@ -747,10 +747,10 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                         return (
                           <div
                             key={type}
-                            className={`p-2.5 rounded-xl border text-center ${
+                            className={`p-2.5 rounded-2xl border text-center ${
                               isLow
-                                ? 'bg-rose-950/40 border-rose-500/40 text-rose-300'
-                                : 'bg-slate-950/70 border-slate-800 text-slate-200'
+                                ? 'bg-rose-50 border-rose-200 text-rose-700'
+                                : 'bg-slate-50 border-slate-200 text-slate-800'
                             }`}
                           >
                             <span className="text-[10px] block font-bold text-slate-400 mb-1">{type}</span>
@@ -758,13 +758,13 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                             <div className="flex items-center justify-center gap-1 mt-1.5">
                               <button
                                 onClick={() => adjustHospitalInventory(h.id, type, -1)}
-                                className="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center text-xs transition-all"
+                                className="w-6 h-6 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs transition-all"
                               >
                                 -
                               </button>
                               <button
                                 onClick={() => adjustHospitalInventory(h.id, type, 1)}
-                                className="w-6 h-6 rounded bg-rose-600/80 hover:bg-rose-600 text-white font-bold flex items-center justify-center text-xs transition-all"
+                                className="w-6 h-6 rounded bg-rose-600 hover:bg-rose-500 text-white font-bold flex items-center justify-center text-xs transition-all shadow-sm"
                               >
                                 +
                               </button>
@@ -782,20 +782,20 @@ export function AdminPortalModal({ onClose, onDataChange }) {
           {/* TAB 4: DISPATCH TELEMETRY AUDIT */}
           {activeTab === 'dispatches' && (
             <div className="space-y-4">
-              <div className="bg-slate-900/70 p-3.5 rounded-xl border border-slate-800">
-                <h4 className="text-xs font-bold text-white">Cold-Chain Drone & Ground Transport Mission Log</h4>
-                <p className="text-[11px] text-slate-400">Live vector state, battery telemetry, and temperature compliance</p>
+              <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                <h4 className="text-xs font-bold text-slate-900">Cold-Chain Drone & Ground Transport Mission Log</h4>
+                <p className="text-[11px] text-slate-500">Live vector state, battery telemetry, and temperature compliance</p>
               </div>
 
               {dispatches.length === 0 ? (
-                <div className="bg-slate-900/60 border border-slate-800 p-12 text-center rounded-2xl text-slate-400 text-sm">
+                <div className="bg-white border border-slate-200 p-12 text-center rounded-3xl text-slate-500 text-sm shadow-sm">
                   No active or past dispatch sessions recorded yet. Launch a dispatch from the main radar map.
                 </div>
               ) : (
-                <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden">
+                <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
+                    <table className="w-full text-left text-xs text-slate-700">
+                      <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200">
                         <tr>
                           <th className="px-4 py-3">Mission ID</th>
                           <th className="px-4 py-3">Transport</th>
@@ -806,43 +806,43 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                           <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60">
+                      <tbody className="divide-y divide-slate-100">
                         {dispatches.map(disp => (
-                          <tr key={disp.id} className="hover:bg-slate-800/40 transition-all">
-                            <td className="px-4 py-3 font-mono font-bold text-white">{disp.id}</td>
+                          <tr key={disp.id} className="hover:bg-slate-50/80 transition-all">
+                            <td className="px-4 py-3 font-mono font-bold text-slate-900">{disp.id}</td>
                             <td className="px-4 py-3">
-                              <span className="text-[11px] bg-slate-800 px-2 py-0.5 rounded text-slate-300 font-semibold">
+                              <span className="text-[11px] bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-semibold">
                                 {disp.transportType}
                               </span>
                             </td>
                             <td className="px-4 py-3">
                               <div>
-                                <span className="font-semibold text-rose-300">{disp.donorName} ({disp.donorBloodType})</span>
-                                <span className="text-slate-500 mx-1.5">→</span>
-                                <span className="text-slate-300">{disp.hospitalName}</span>
+                                <span className="font-semibold text-rose-600">{disp.donorName} ({disp.donorBloodType})</span>
+                                <span className="text-slate-400 mx-1.5">→</span>
+                                <span className="text-slate-800 font-medium">{disp.hospitalName}</span>
                               </div>
-                              <span className="text-[10px] text-slate-500 font-mono block">Rem: {disp.remainingMiles} mi • ETA: ~{disp.etaMinutes} min</span>
+                              <span className="text-[10px] text-slate-400 font-mono block">Rem: {disp.remainingMiles} mi • ETA: ~{disp.etaMinutes} min</span>
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-1.5 font-mono text-xs">
-                                <Thermometer className="w-3.5 h-3.5 text-cyan-400" />
-                                <span className="text-cyan-300 font-bold">{disp.tempCelsius}°C</span>
-                                <span className="text-[9px] text-emerald-400 bg-emerald-500/10 px-1 rounded">Safe</span>
+                                <Thermometer className="w-3.5 h-3.5 text-sky-600" />
+                                <span className="text-sky-700 font-bold">{disp.tempCelsius}°C</span>
+                                <span className="text-[9px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-1 rounded">Safe</span>
                               </div>
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-1.5 font-mono text-xs">
-                                <Battery className="w-3.5 h-3.5 text-emerald-400" />
-                                <span className="text-slate-200">{disp.batteryPct}%</span>
+                                <Battery className="w-3.5 h-3.5 text-emerald-600" />
+                                <span className="text-slate-800 font-bold">{disp.batteryPct}%</span>
                               </div>
                             </td>
                             <td className="px-4 py-3">
                               <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${
                                 disp.status === 'En Route'
-                                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                                  ? 'bg-amber-50 border-amber-200 text-amber-700'
                                   : disp.status === 'Arrived'
-                                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                                  : 'bg-slate-100 border-slate-200 text-slate-600'
                               }`}>
                                 {disp.status}
                               </span>
@@ -852,14 +852,14 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                                 {disp.status === 'En Route' && (
                                   <button
                                     onClick={() => updateDispatchStatus(disp.id, 'Cancelled')}
-                                    className="text-[10px] bg-red-500/20 hover:bg-red-500/30 text-red-400 px-2 py-1 rounded border border-red-500/30 transition-all"
+                                    className="text-[10px] bg-rose-50 hover:bg-rose-100 text-rose-600 px-2 py-1 rounded border border-rose-200 transition-all font-semibold"
                                   >
                                     Abort
                                   </button>
                                 )}
                                 <button
                                   onClick={() => deleteDispatch(disp.id)}
-                                  className="p-1 text-slate-500 hover:text-slate-300 transition-all"
+                                  className="p-1 text-slate-400 hover:text-slate-700 transition-all"
                                   title="Clear Log"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -879,14 +879,14 @@ export function AdminPortalModal({ onClose, onDataChange }) {
           {/* TAB 5: EMERGENCY BROADCAST ALERTS */}
           {activeTab === 'alerts' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between bg-slate-900/70 p-3.5 rounded-xl border border-slate-800">
+              <div className="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                 <div>
-                  <h4 className="text-xs font-bold text-white">Emergency Shortage Alerts & Network Broadcasts</h4>
-                  <p className="text-[11px] text-slate-400">Broadcast immediate critical supply shortage beacons to regional donors</p>
+                  <h4 className="text-xs font-bold text-slate-900">Emergency Shortage Alerts & Network Broadcasts</h4>
+                  <p className="text-[11px] text-slate-500">Broadcast immediate critical supply shortage beacons to regional donors</p>
                 </div>
                 <button
                   onClick={() => setShowAddAlert(!showAddAlert)}
-                  className="flex items-center gap-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md shadow-amber-600/20"
+                  className="flex items-center gap-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Broadcast New Alert</span>
@@ -895,11 +895,11 @@ export function AdminPortalModal({ onClose, onDataChange }) {
 
               {/* Add Alert Form */}
               {showAddAlert && (
-                <form onSubmit={handleCreateAlert} className="bg-slate-900/90 border border-amber-500/40 p-4 rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <form onSubmit={handleCreateAlert} className="bg-white border border-amber-300 p-4 rounded-2xl shadow-sm grid grid-cols-1 sm:grid-cols-4 gap-3">
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Target Medical Center</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Target Medical Center</label>
                     <select
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newAlert.hospitalId}
                       onChange={e => setNewAlert(a => ({ ...a, hospitalId: e.target.value }))}
                     >
@@ -907,9 +907,9 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Shortage Blood Group</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Shortage Blood Group</label>
                     <select
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       value={newAlert.bloodType}
                       onChange={e => setNewAlert(a => ({ ...a, bloodType: e.target.value }))}
                     >
@@ -917,9 +917,9 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Emergency Message</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Emergency Message</label>
                     <input
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900"
                       placeholder="e.g. Critical Trauma Shortage — Urgent O- units required"
                       value={newAlert.message}
                       onChange={e => setNewAlert(a => ({ ...a, message: e.target.value }))}
@@ -929,14 +929,14 @@ export function AdminPortalModal({ onClose, onDataChange }) {
                   <div className="flex items-end gap-2">
                     <button
                       type="submit"
-                      className="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2 rounded-lg transition-all"
+                      className="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2 rounded-lg transition-all shadow-sm"
                     >
                       Broadcast
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowAddAlert(false)}
-                      className="px-2.5 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs"
+                      className="px-2.5 py-2 bg-slate-200 text-slate-700 hover:bg-slate-300 rounded-lg text-xs"
                     >
                       Cancel
                     </button>
@@ -947,32 +947,32 @@ export function AdminPortalModal({ onClose, onDataChange }) {
               {/* Alerts List */}
               <div className="space-y-3">
                 {alerts.length === 0 ? (
-                  <div className="bg-slate-900/60 border border-slate-800 p-12 text-center rounded-2xl text-slate-400 text-sm">
+                  <div className="bg-white border border-slate-200 p-12 text-center rounded-3xl text-slate-500 text-sm shadow-sm">
                     No active emergency broadcasts. All hospital reserves are within safe thresholds.
                   </div>
                 ) : (
                   alerts.map(a => (
-                    <div key={a.id} className="bg-slate-900/90 border border-rose-500/40 p-4 rounded-xl flex items-center justify-between gap-4">
+                    <div key={a.id} className="bg-white border border-rose-200 p-4 rounded-2xl shadow-sm flex items-center justify-between gap-4">
                       <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                        <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
                           <AlertTriangle className="w-5 h-5" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold text-xs bg-rose-500 text-white px-2 py-0.5 rounded">
+                            <span className="font-mono font-bold text-xs bg-rose-600 text-white px-2 py-0.5 rounded">
                               {a.bloodType} Shortage
                             </span>
                             <span className="text-xs text-slate-400 font-mono">{a.id}</span>
-                            <span className="text-[10px] text-amber-400 font-semibold uppercase">{a.urgency}</span>
+                            <span className="text-[10px] text-amber-700 font-semibold uppercase">{a.urgency}</span>
                           </div>
-                          <p className="text-sm font-semibold text-white mt-1">{a.message}</p>
+                          <p className="text-sm font-semibold text-slate-900 mt-1">{a.message}</p>
                           <p className="text-[11px] text-slate-500 mt-0.5">Location: {a.hospitalId} • Broadcasted {new Date(a.createdAt).toLocaleString()}</p>
                         </div>
                       </div>
 
                       <button
                         onClick={() => dismissAlert(a.id)}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 transition-all shrink-0"
+                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 transition-all shrink-0"
                       >
                         Dismiss / Resolved
                       </button>
