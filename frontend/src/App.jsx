@@ -17,6 +17,7 @@ import { OrderTrackingModal } from './components/OrderTrackingModal';
 import { DonorAppointmentModal } from './components/DonorAppointmentModal';
 import { ToastNotification } from './components/ToastNotification';
 import { playDispatchSonar, playArrivalChime, toggleSound, isSoundEnabled } from './utils/audioAlerts';
+import { resilientFetch } from './api/client';
 
 export default function App() {
   // Authentication State
@@ -66,11 +67,12 @@ export default function App() {
   // Fetch Hospitals list
   const fetchHospitals = useCallback(async () => {
     try {
-      const res = await fetch('/api/hospitals');
-      const data = await res.json();
-      setHospitals(data);
-      if (!selectedHospitalId && data.length > 0) {
-        setSelectedHospitalId(data[0].id);
+      const data = await resilientFetch('/api/hospitals');
+      if (Array.isArray(data) && data.length > 0) {
+        setHospitals(data);
+        if (!selectedHospitalId) {
+          setSelectedHospitalId(data[0].id);
+        }
       }
     } catch (e) {
       console.error('Error fetching hospitals:', e);
@@ -80,9 +82,10 @@ export default function App() {
   // Fetch AI Matched Donors
   const fetchMatches = useCallback(async () => {
     try {
-      const res = await fetch(`/api/donors/matches/${recipientType}?urgency=${urgency}&hospitalId=${selectedHospitalId}`);
-      const data = await res.json();
-      setMatches(data.matches || []);
+      const data = await resilientFetch(`/api/donors/matches/${recipientType}?urgency=${urgency}&hospitalId=${selectedHospitalId}`);
+      if (data && data.matches) {
+        setMatches(data.matches);
+      }
     } catch (e) {
       console.error('Error fetching matches:', e);
     }
@@ -100,18 +103,19 @@ export default function App() {
   // Poll active telemetry for all dispatches
   const pollActiveTelemetry = useCallback(async () => {
     try {
-      const res = await fetch('/api/dispatch/track-all');
-      const allDispatches = await res.json();
-      setDispatches(allDispatches);
+      const allDispatches = await resilientFetch('/api/dispatch/track-all', {}, 1, 4000);
+      if (Array.isArray(allDispatches)) {
+        setDispatches(allDispatches);
 
-      // Check if newly arrived
-      allDispatches.forEach(disp => {
-        if (disp.status === 'Arrived' && !acknowledgedArrivedRef.current.has(disp.id)) {
-          acknowledgedArrivedRef.current.add(disp.id);
-          playArrivalChime();
-          showToast(`🎉 Rooftop Arrival: ${disp.transportType} delivered ${disp.donorBloodType} blood to ${disp.hospitalName}.`, 'success');
-        }
-      });
+        // Check if newly arrived
+        allDispatches.forEach(disp => {
+          if (disp.status === 'Arrived' && !acknowledgedArrivedRef.current.has(disp.id)) {
+            acknowledgedArrivedRef.current.add(disp.id);
+            playArrivalChime();
+            showToast(`🎉 Rooftop Arrival: ${disp.transportType} delivered ${disp.donorBloodType} blood to ${disp.hospitalName}.`, 'success');
+          }
+        });
+      }
     } catch (e) {
       console.error('Telemetry polling error:', e);
     }

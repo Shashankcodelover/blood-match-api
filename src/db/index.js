@@ -1,11 +1,13 @@
 /**
- * LifeStream V4.0 Enterprise - Master Persistent Database Store
+ * LifeStream V4.0 Enterprise - Universal Resilient Database Store
+ * Implements in-memory caching with graceful disk / tmp persistence for Vercel Serverless, Render, Koyeb & Docker.
  */
 const fs = require('fs');
 const path = require('path');
 const { hashPassword } = require('../services/authService');
 
-const DB_PATH = path.join(__dirname, '../../db.json');
+const LOCAL_DB_PATH = path.join(__dirname, '../../db.json');
+const TMP_DB_PATH = '/tmp/lifestream_db.json';
 
 // Initialize default seed users with hashed passwords
 const seedUser1 = hashPassword('doctor123');
@@ -105,7 +107,7 @@ const INITIAL_DATA = {
       contactPhone: '+1 415-555-0911',
       medicalReason: 'Severe thoracic trauma from highway incident. Massive blood loss protocol activated.',
       custodySeal: 'E39F8A2D104B76C1',
-      trackingStep: 3, // 1: Placed, 2: Matched, 3: In Flight, 4: Rooftop Delivery, 5: Transfused
+      trackingStep: 3,
       createdAt: new Date(Date.now() - 1800000).toISOString()
     }
   ],
@@ -129,30 +131,59 @@ const INITIAL_DATA = {
   ]
 };
 
+// Global in-memory cache
+let memoryStore = null;
+
 function readDB() {
-  if (!fs.existsSync(DB_PATH)) {
-    writeDB(INITIAL_DATA);
-    return INITIAL_DATA;
+  if (memoryStore) return memoryStore;
+
+  // Try reading from local db.json
+  if (fs.existsSync(LOCAL_DB_PATH)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(LOCAL_DB_PATH, 'utf8'));
+      sanitizeData(data);
+      memoryStore = data;
+      return memoryStore;
+    } catch (e) {}
   }
-  try {
-    const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
-    if (!data.users || data.users.length < 4) data.users = INITIAL_DATA.users;
-    if (!data.hospitals || data.hospitals.length < 5) data.hospitals = INITIAL_DATA.hospitals;
-    if (!data.donors || data.donors.length < 9) data.donors = INITIAL_DATA.donors;
-    if (!data.dispatches) data.dispatches = [];
-    if (!data.requests) data.requests = INITIAL_DATA.requests;
-    if (!data.appointments) data.appointments = INITIAL_DATA.appointments;
-    if (!data.transfers) data.transfers = [];
-    if (!data.alerts) data.alerts = INITIAL_DATA.alerts;
-    return data;
-  } catch (e) {
-    writeDB(INITIAL_DATA);
-    return INITIAL_DATA;
+
+  // Try reading from /tmp on serverless
+  if (fs.existsSync(TMP_DB_PATH)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(TMP_DB_PATH, 'utf8'));
+      sanitizeData(data);
+      memoryStore = data;
+      return memoryStore;
+    } catch (e) {}
   }
+
+  memoryStore = JSON.parse(JSON.stringify(INITIAL_DATA));
+  writeDB(memoryStore);
+  return memoryStore;
+}
+
+function sanitizeData(data) {
+  if (!data.users || data.users.length < 4) data.users = INITIAL_DATA.users;
+  if (!data.hospitals || data.hospitals.length < 5) data.hospitals = INITIAL_DATA.hospitals;
+  if (!data.donors || data.donors.length < 9) data.donors = INITIAL_DATA.donors;
+  if (!data.dispatches) data.dispatches = [];
+  if (!data.requests) data.requests = INITIAL_DATA.requests;
+  if (!data.appointments) data.appointments = INITIAL_DATA.appointments;
+  if (!data.transfers) data.transfers = [];
+  if (!data.alerts) data.alerts = INITIAL_DATA.alerts;
 }
 
 function writeDB(data) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  memoryStore = data;
+  try {
+    fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(data, null, 2));
+  } catch (e) {
+    try {
+      fs.writeFileSync(TMP_DB_PATH, JSON.stringify(data, null, 2));
+    } catch (err) {
+      // Memory store fallback on read-only serverless
+    }
+  }
 }
 
-module.exports = { readDB, writeDB };
+module.exports = { readDB, writeDB, INITIAL_DATA };
