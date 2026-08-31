@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/donors', require('./routes/donors'));
 app.use('/api/dispatch', require('./routes/dispatch'));
 app.use('/api/hospitals', require('./routes/hospitals'));
+app.use('/api/requests', require('./routes/requests'));
 app.use('/api/admin', require('./routes/admin'));
 
 // Backward compatibility endpoints for legacy frontend compatibility
@@ -22,8 +23,8 @@ app.get('/api/track/:dispatchId', (req, res) => {
   res.redirect(`/api/dispatch/track/${req.params.dispatchId}`);
 });
 
-app.get('/health', (req, res) => res.status(200).json({ status: 'LifeStream V3.1 Active', service: 'blood-match-api' }));
+app.get('/health', (req, res) => res.status(200).json({ status: 'LifeStream V3.2 Pro Active', service: 'blood-match-api' }));
 
 app.listen(PORT, () => {
-  console.log(`🚀 LifeStream V3.1 (Smart Blood Network) API running on http://localhost:${PORT}`);
+  console.log(`🚀 LifeStream V3.2 Pro (Smart Emergency Blood Network) API running on http://localhost:${PORT}`);
 });
