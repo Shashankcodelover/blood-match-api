@@ -236,7 +236,7 @@ export default function App() {
   const currentHospital = hospitals.find(h => h.id === selectedHospitalId) || hospitals[0] || { name: 'SF General Trauma Center', lat: 37.7749, lng: -122.4194 };
 
   return (
-    <div className="relative w-full h-screen overflow-x-hidden select-none bg-slate-50 font-sans text-slate-800">
+    <div className="relative w-full h-screen overflow-x-hidden select-none bg-[#f8fafd] font-sans text-[#202124]">
       {/* Toast Alert */}
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Award, Heart, CheckCircle2, Calendar, Plus, Phone, Droplet, Clock, ShieldCheck } from 'lucide-react';
+import { Trophy, Award, Heart, CheckCircle2, Calendar, Plus, Phone, Droplet, Clock, ShieldCheck, Sparkles, UserCheck } from 'lucide-react';
 import { resilientFetch } from '../api/client';
 
 export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpenEligibility }) {
@@ -25,33 +25,34 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
   }, []);
 
   return (
-    <div className="pt-20 pb-12 px-4 sm:px-8 max-w-7xl mx-auto space-y-8 animate-fade-in">
-      {/* Header */}
+    <div className="pt-20 pb-12 px-4 sm:px-8 max-w-6xl mx-auto space-y-6 animate-fade-in">
+      {/* Header with Google Brand Banner */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Hero Donor Community & Appointments</h2>
-            <span className="text-xs font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">
-              LIFESAVERS
+            <span className="w-3 h-3 rounded-full bg-[#fbbc04]" />
+            <h2 className="text-xl font-bold text-[#202124] tracking-tight">Google Health • Community Heroes & Center Bookings</h2>
+            <span className="text-[10px] font-bold bg-[#fef7e0] text-[#b06000] border border-[#feefc3] px-2.5 py-0.5 rounded-full">
+              VOLUNTARY NETWORK
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Top voluntary community heroes, rapid health screening clearance, and scheduled center appointments
+          <p className="text-xs text-[#5f6368] mt-1">
+            Top voluntary lifesavers, rapid medical health screening clearance, and scheduled center donations
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={onOpenEligibility}
-            className="flex items-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm"
+            className="flex items-center gap-1.5 bg-white hover:bg-[#f8fafd] text-[#1e8e3e] border border-[#dadce0] text-xs font-bold px-3.5 py-2 rounded-full transition-all shadow-sm"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#34a853]" />
             <span>5-Point Health Clearance</span>
           </button>
 
           <button
             onClick={onOpenAppointments}
-            className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-md transition-all"
+            className="flex items-center gap-1.5 bg-[#ea4335] hover:bg-[#d93025] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm transition-all"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Book Donation Appointment</span>
@@ -65,12 +66,12 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-500" />
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+              <Trophy className="w-5 h-5 text-[#fbbc04]" />
+              <h3 className="text-sm font-bold text-[#202124] uppercase tracking-wider">
                 Top Voluntary Blood Donors
               </h3>
             </div>
-            <span className="text-[11px] text-slate-500">Ranked by verified donations & reliability</span>
+            <span className="text-[11px] text-[#5f6368]">Ranked by verified donations & reliability</span>
           </div>
 
           <div className="space-y-3">
@@ -79,23 +80,23 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
               return (
                 <div
                   key={donor.id}
-                  className={`p-4 rounded-2xl border transition-all flex flex-wrap items-center justify-between gap-3 ${
+                  className={`p-4 rounded-3xl border transition-all flex flex-wrap items-center justify-between gap-3 shadow-[0_1px_3px_rgba(60,64,67,0.08)] ${
                     rank === 1
-                      ? 'bg-amber-50/50 border-amber-300 shadow-sm'
-                      : 'bg-white border-slate-200 shadow-sm hover:border-slate-300'
+                      ? 'bg-[#fef7e0]/40 border-[#feefc3]'
+                      : 'bg-white border-[#dadce0] hover:border-[#bdc1c6]'
                   }`}
                 >
                   <div className="flex items-center gap-3.5">
                     {/* Rank Badge */}
                     <div
-                      className={`w-9 h-9 rounded-xl font-bold font-mono text-xs flex items-center justify-center ${
+                      className={`w-9 h-9 rounded-full font-bold text-xs flex items-center justify-center ${
                         rank === 1
-                          ? 'bg-amber-500 text-white shadow-sm'
+                          ? 'bg-[#fbbc04] text-[#202124] shadow-sm'
                           : rank === 2
-                          ? 'bg-slate-200 text-slate-700'
+                          ? 'bg-[#dadce0] text-[#202124]'
                           : rank === 3
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-slate-100 text-slate-500'
+                          ? 'bg-[#f8d7da] text-[#721c24]'
+                          : 'bg-[#f1f3f4] text-[#5f6368]'
                       }`}
                     >
                       #{rank}
@@ -103,12 +104,12 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
 
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-bold text-slate-900 text-xs">{donor.name}</h4>
-                        <span className="text-[10px] font-mono font-bold bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.2 rounded">
+                        <h4 className="font-bold text-[#202124] text-xs">{donor.name}</h4>
+                        <span className="text-[10px] font-mono font-bold bg-[#fce8e6] text-[#c5221f] border border-[#fad2cf] px-1.5 py-0.2 rounded">
                           {donor.bloodType}
                         </span>
                         {donor.isVerified && (
-                          <span className="text-[9px] font-mono text-emerald-700 border border-emerald-200 bg-emerald-50 px-1 rounded">
+                          <span className="text-[9px] font-medium text-[#137333] border border-[#ceead6] bg-[#e6f4ea] px-1.5 py-0.2 rounded-full">
                             Verified
                           </span>
                         )}
@@ -116,7 +117,7 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
 
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
                         {(donor.badges || []).map(b => (
-                          <span key={b} className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200">
+                          <span key={b} className="text-[9px] bg-[#f1f3f4] text-[#5f6368] px-2 py-0.5 rounded-full border border-[#dadce0]">
                             {b}
                           </span>
                         ))}
@@ -124,15 +125,15 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs font-mono">
+                  <div className="flex items-center gap-4 text-xs">
                     <div className="text-right">
-                      <span className="font-bold text-slate-900 block">{donor.totalDonations || 0} Donations</span>
-                      <span className="text-[10px] text-emerald-600 font-semibold">~{donor.estimatedLivesSaved || (donor.totalDonations * 3)} Lives Saved</span>
+                      <span className="font-bold text-[#202124] block">{donor.totalDonations || 0} Donations</span>
+                      <span className="text-[10px] text-[#137333] font-medium">~{donor.estimatedLivesSaved || (donor.totalDonations * 3)} Lives Saved</span>
                     </div>
 
-                    <div className="text-right pl-3 border-l border-slate-200">
-                      <span className="font-bold text-sky-600 block">{donor.reliabilityScore || 95}%</span>
-                      <span className="text-[10px] text-slate-400">Reliability</span>
+                    <div className="text-right pl-3 border-l border-[#dadce0]">
+                      <span className="font-bold text-[#1a73e8] block">{donor.reliabilityScore || 95}%</span>
+                      <span className="text-[10px] text-[#70757a]">Reliability</span>
                     </div>
                   </div>
                 </div>
@@ -147,32 +148,32 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-rose-600" />
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <Calendar className="w-4 h-4 text-[#ea4335]" />
+                <h3 className="text-xs font-bold text-[#202124] uppercase tracking-wider">
                   Upcoming Center Bookings
                 </h3>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-3">
+            <div className="bg-white border border-[#dadce0] p-4 rounded-3xl shadow-[0_1px_3px_rgba(60,64,67,0.08)] space-y-3">
               {appointments.length > 0 ? (
                 appointments.slice(0, 3).map(apt => (
-                  <div key={apt.id} className="bg-slate-50 border border-slate-200 p-3 rounded-xl text-xs space-y-1">
+                  <div key={apt.id} className="bg-[#f8fafd] border border-[#dadce0] p-3 rounded-2xl text-xs space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-900">{apt.hospitalName}</span>
-                      <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded">
+                      <span className="font-bold text-[#202124]">{apt.hospitalName}</span>
+                      <span className="text-[9px] font-medium text-[#137333] bg-[#e6f4ea] border border-[#ceead6] px-2 py-0.2 rounded-full">
                         {apt.status}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-600">{apt.donationType}</p>
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-200">
+                    <p className="text-[11px] text-[#5f6368]">{apt.donationType}</p>
+                    <div className="flex items-center justify-between text-[10px] text-[#70757a] pt-1 border-t border-[#e8eaed]">
                       <span>📅 {apt.date}</span>
                       <span>⏰ {apt.timeSlot}</span>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="py-6 text-center text-xs text-slate-400">
+                <div className="py-6 text-center text-xs text-[#70757a]">
                   No appointments booked yet. Click "Book Donation Appointment" above.
                 </div>
               )}
@@ -180,14 +181,14 @@ export function CommunityView({ user, hospitals = [], onOpenAppointments, onOpen
           </div>
 
           {/* Impact Stats Card */}
-          <div className="bg-rose-50 border border-rose-200 p-5 rounded-3xl space-y-3 shadow-sm">
-            <h4 className="text-xs font-bold text-rose-800 uppercase tracking-wider">Community Impact Goal</h4>
-            <p className="text-xs text-slate-700 leading-relaxed">
+          <div className="bg-[#e8f0fe]/60 border border-[#d2e3fc] p-5 rounded-3xl space-y-3 shadow-sm">
+            <h4 className="text-xs font-bold text-[#1a73e8] uppercase tracking-wider">Community Impact Goal</h4>
+            <p className="text-xs text-[#3c4043] leading-relaxed">
               Every whole blood unit can be separated into Red Blood Cells, Plasma, and Platelets — potentially saving up to **3 individual lives** in acute trauma cases.
             </p>
-            <div className="pt-2 border-t border-rose-200 flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-600">Universal O- Reserves</span>
-              <span className="text-emerald-700 font-bold">Priority Monitored</span>
+            <div className="pt-2 border-t border-[#d2e3fc] flex items-center justify-between text-xs font-medium">
+              <span className="text-[#5f6368]">Universal O- Reserves</span>
+              <span className="text-[#137333] font-bold">Priority Monitored</span>
             </div>
           </div>
         </div>
