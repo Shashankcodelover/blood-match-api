@@ -9,7 +9,8 @@
     "dev": "node src/server.js",
     "dev:backend": "node src/server.js",
     "dev:frontend": "cd frontend && npm run dev",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "test": "node --test test/engine.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

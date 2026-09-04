@@ -1,6 +1,24 @@
 # LifeStream Enterprise V4.0 — Smart Emergency Blood Network & Autonomous Drone Dispatch
 
-LifeStream Enterprise V4.0 is an enterprise-grade medical logistics, emergency blood dispatch, and Amazon-style cold-chain tracking platform designed for STAT trauma response, donor engagement, and automated inter-hospital blood balancing.
+> **Autonomous Medical Emergency Blood Logistics Platform**  
+> *Google Health Standard • Real-Time Geospatial Radar • Cold-Chain IoT Telemetry (2°C–6°C)*
+
+[![Live Deployment](https://img.shields.io/badge/Live%20Demo-blood--match--api.vercel.app-1a73e8?logo=vercel)](https://blood-match-api.vercel.app)
+[![Automated Tests](https://img.shields.io/badge/Automated%20Tests-5%2F5%20Passing-10b981?logo=node.js)](test/engine.test.js)
+[![React 18](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite-61DAFB?logo=react)](frontend/)
+[![Leaflet.js](https://img.shields.io/badge/Geospatial-Leaflet%20Radar%20Map-199900?logo=leaflet)](frontend/src/components/RadarMap.jsx)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
+
+## 🎬 Media Showcase & Screenshot Gallery
+Complete visual documentation and canonical screenshots are available in [`docs/showcase/`](docs/showcase/):
+- 🗺️ [**Geospatial Live Radar Map**](docs/showcase/screenshots/lifestream_radar_map.png)
+- 🏥 [**Regional Blood Reserves & Cross-Match Matrix**](docs/showcase/screenshots/lifestream_reserves.png)
+- 📦 [**Emergency Delivery Tracker with Cold-Chain Telemetry**](docs/showcase/screenshots/lifestream_deliveries.png)
+- 🏆 [**Community Heroes & Center Bookings**](docs/showcase/screenshots/lifestream_community.png)
+- 🚨 [**STAT Emergency Blood Intake Portal**](docs/showcase/screenshots/lifestream_stat_request.png)
+- ⚡ [**1-Click Instant Demo Login Switcher**](docs/showcase/screenshots/lifestream_auth_modal.png)
 
 ```
 blood-match-api/
